@@ -26,6 +26,18 @@ final class CC_Form {
 	private static ?array $notice = null;
 
 	/**
+	 * 直前の入力。検証で弾いたときにフォームへ戻すために持つ。
+	 *
+	 * @var array<string, string>
+	 */
+	private static array $input = array(
+		'name'    => '',
+		'email'   => '',
+		'tel'     => '',
+		'message' => '',
+	);
+
+	/**
 	 * フック登録。
 	 */
 	public static function init(): void {
@@ -42,8 +54,9 @@ final class CC_Form {
 	}
 
 	/**
-	 * 送信の受け取り。POST は描画前に処理してリダイレクトしない
-	 * （PRG にすると入力内容を戻せないため、同一URLで結果を出す）。
+	 * 送信の受け取り。POST は描画前に処理してリダイレクトしない。
+	 * PRG にすると入力内容を戻せないので、同一 URL で結果を出し、
+	 * 弾いたときは self::$input をフォームへ書き戻す。
 	 */
 	public static function handle(): void {
 		if ( 'POST' !== ( $_SERVER['REQUEST_METHOD'] ?? '' ) ) {
@@ -75,6 +88,14 @@ final class CC_Form {
 		$tel     = sanitize_text_field( wp_unslash( (string) ( $_POST['cc_tel'] ?? '' ) ) );
 		$message = sanitize_textarea_field( wp_unslash( (string) ( $_POST['cc_message'] ?? '' ) ) );
 
+		// 検証で弾いたときに書き直させないよう、入力をこの時点で控える。
+		self::$input = array(
+			'name'    => $name,
+			'email'   => $email,
+			'tel'     => $tel,
+			'message' => $message,
+		);
+
 		$errors = array();
 		if ( '' === $name ) {
 			$errors[] = __( 'お名前をご記入ください。', 'clinic-contact' );
@@ -95,6 +116,11 @@ final class CC_Form {
 		}
 
 		self::$notice = self::send( $name, $email, $tel, $message );
+
+		// 送れたら控えを捨てる。残すと同じ内容を二重送信させてしまう。
+		if ( 'ok' === self::$notice['type'] ) {
+			self::$input = array( 'name' => '', 'email' => '', 'tel' => '', 'message' => '' );
+		}
 	}
 
 	/**
@@ -191,19 +217,19 @@ final class CC_Form {
 
 				<p class="cc__row">
 					<label for="cc_name"><?php esc_html_e( 'お名前', 'clinic-contact' ); ?> <span class="cc__req"><?php esc_html_e( '必須', 'clinic-contact' ); ?></span></label>
-					<input type="text" name="cc_name" id="cc_name" required autocomplete="name">
+					<input type="text" name="cc_name" id="cc_name" required autocomplete="name" maxlength="100" value="<?php echo esc_attr( self::$input['name'] ); ?>">
 				</p>
 				<p class="cc__row">
 					<label for="cc_email"><?php esc_html_e( 'メールアドレス', 'clinic-contact' ); ?> <span class="cc__req"><?php esc_html_e( '必須', 'clinic-contact' ); ?></span></label>
-					<input type="email" name="cc_email" id="cc_email" required autocomplete="email">
+					<input type="email" name="cc_email" id="cc_email" required autocomplete="email" maxlength="254" value="<?php echo esc_attr( self::$input['email'] ); ?>">
 				</p>
 				<p class="cc__row">
 					<label for="cc_tel"><?php esc_html_e( '電話番号（任意）', 'clinic-contact' ); ?></label>
-					<input type="tel" name="cc_tel" id="cc_tel" autocomplete="tel">
+					<input type="tel" name="cc_tel" id="cc_tel" autocomplete="tel" maxlength="30" value="<?php echo esc_attr( self::$input['tel'] ); ?>">
 				</p>
 				<p class="cc__row">
 					<label for="cc_message"><?php esc_html_e( 'ご相談内容', 'clinic-contact' ); ?> <span class="cc__req"><?php esc_html_e( '必須', 'clinic-contact' ); ?></span></label>
-					<textarea name="cc_message" id="cc_message" rows="5" required></textarea>
+					<textarea name="cc_message" id="cc_message" rows="5" required maxlength="2000"><?php echo esc_textarea( self::$input['message'] ); ?></textarea>
 				</p>
 				<p class="cc__actions">
 					<button type="submit" class="cc__submit"><?php esc_html_e( '送信する', 'clinic-contact' ); ?></button>
