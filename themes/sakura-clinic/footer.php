@@ -7,12 +7,12 @@
 
 defined( 'ABSPATH' ) || exit;
 
-$sakura_notice = sakura_clinic_get( 'sample_notice' );
+$sakura_clinic_notice = sakura_clinic_get( 'sample_notice' );
 ?>
 </main><!-- #main -->
 
-<?php if ( '' !== $sakura_notice ) : ?>
-	<p class="sample-notice"><?php echo esc_html( $sakura_notice ); ?></p>
+<?php if ( '' !== $sakura_clinic_notice ) : ?>
+	<p class="sample-notice"><?php echo esc_html( $sakura_clinic_notice ); ?></p>
 <?php endif; ?>
 
 <footer class="site-footer">

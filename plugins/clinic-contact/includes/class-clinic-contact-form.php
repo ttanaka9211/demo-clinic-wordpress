@@ -12,7 +12,7 @@ defined( 'ABSPATH' ) || exit;
 /**
  * フォームの描画と受信処理。
  */
-final class CC_Form {
+final class Clinic_Contact_Form {
 
 	private const NONCE   = 'cc_submit';
 	private const HONEY   = 'cc_website';
@@ -54,7 +54,7 @@ final class CC_Form {
 	 * アセット登録。
 	 */
 	public static function register_assets(): void {
-		wp_register_style( 'clinic-contact', CC_URL . 'assets/contact.css', array(), CC_VERSION );
+		wp_register_style( 'clinic-contact', CLINIC_CONTACT_URL . 'assets/contact.css', array(), CLINIC_CONTACT_VERSION );
 	}
 
 	/**
@@ -63,20 +63,32 @@ final class CC_Form {
 	 * 弾いたときは self::$input をフォームへ書き戻す。
 	 */
 	public static function handle(): void {
-		if ( 'POST' !== ( $_SERVER['REQUEST_METHOD'] ?? '' ) ) {
+		$method = isset( $_SERVER['REQUEST_METHOD'] )
+			? sanitize_text_field( wp_unslash( (string) $_SERVER['REQUEST_METHOD'] ) )
+			: '';
+		if ( 'POST' !== $method ) {
 			return;
 		}
 		if ( ! isset( $_POST['cc_nonce'] ) ) {
 			return;
 		}
 		if ( ! wp_verify_nonce( sanitize_text_field( wp_unslash( (string) $_POST['cc_nonce'] ) ), self::NONCE ) ) {
-			self::$notice = array( 'type' => 'error', 'text' => __( '送信の有効期限が切れました。お手数ですが、もう一度お試しください。', 'clinic-contact' ) );
+			self::$notice = array(
+				'type' => 'error',
+				'text' => __( '送信の有効期限が切れました。お手数ですが、もう一度お試しください。', 'clinic-contact' ),
+			);
 			return;
 		}
 
 		// ハニーポット：人には見えない欄に入力があれば機械とみなす。
-		if ( '' !== trim( (string) ( $_POST[ self::HONEY ] ?? '' ) ) ) {
-			self::$notice = array( 'type' => 'ok', 'text' => __( '送信しました。', 'clinic-contact' ) );
+		$honey = isset( $_POST[ self::HONEY ] )
+			? sanitize_text_field( wp_unslash( (string) $_POST[ self::HONEY ] ) )
+			: '';
+		if ( '' !== trim( $honey ) ) {
+			self::$notice = array(
+				'type' => 'ok',
+				'text' => __( '送信しました。', 'clinic-contact' ),
+			);
 			return;
 		}
 
@@ -93,7 +105,10 @@ final class CC_Form {
 		 */
 		$started = absint( $_POST['cc_started'] ?? 0 );
 		if ( $started <= 0 || ( time() - $started ) < self::MIN_SEC ) {
-			self::$notice = array( 'type' => 'ok', 'text' => __( '送信しました。', 'clinic-contact' ) );
+			self::$notice = array(
+				'type' => 'ok',
+				'text' => __( '送信しました。', 'clinic-contact' ),
+			);
 			return;
 		}
 
@@ -137,7 +152,10 @@ final class CC_Form {
 		}
 
 		if ( array() !== $errors ) {
-			self::$notice = array( 'type' => 'error', 'text' => implode( ' ', $errors ) );
+			self::$notice = array(
+				'type' => 'error',
+				'text' => implode( ' ', $errors ),
+			);
 			return;
 		}
 
@@ -156,7 +174,12 @@ final class CC_Form {
 
 		// 送れたら控えを捨てる。残すと同じ内容を二重送信させてしまう。
 		if ( 'ok' === self::$notice['type'] ) {
-			self::$input = array( 'name' => '', 'email' => '', 'tel' => '', 'message' => '' );
+			self::$input = array(
+				'name'    => '',
+				'email'   => '',
+				'tel'     => '',
+				'message' => '',
+			);
 		}
 	}
 
@@ -170,7 +193,14 @@ final class CC_Form {
 	 * プロキシの範囲を決めたうえで扱うこと。
 	 */
 	private static function rate_key(): string {
-		$ip = isset( $_SERVER['REMOTE_ADDR'] ) ? (string) $_SERVER['REMOTE_ADDR'] : 'unknown';
+		$ip = isset( $_SERVER['REMOTE_ADDR'] )
+			? sanitize_text_field( wp_unslash( (string) $_SERVER['REMOTE_ADDR'] ) )
+			: '';
+
+		// 形の壊れた値でキーを作らない。取れなければ一つの枠にまとめる。
+		if ( '' === $ip || false === filter_var( $ip, FILTER_VALIDATE_IP ) ) {
+			$ip = 'unknown';
+		}
 
 		return 'cc_rl_' . md5( $ip );
 	}
@@ -203,10 +233,16 @@ final class CC_Form {
 	/**
 	 * 送信。宛先はサイト管理者。返信先を相談者にする。
 	 *
+	 * @param string $name    お名前。
+	 * @param string $email   メールアドレス。
+	 * @param string $tel     電話番号。空でもよい。
+	 * @param string $message ご相談内容。
 	 * @return array{type: string, text: string}
 	 */
 	private static function send( string $name, string $email, string $tel, string $message ): array {
-		if ( ! CC_Mailer::is_configured() ) {
+		if ( ! Clinic_Contact_Mailer::is_configured() ) {
+			// 設定漏れに気づけるようログに残す。mail() へ落として黙って劣化させない。
+			// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
 			error_log( '[clinic-contact] SMTP constants are missing; refusing to send via mail().' );
 			return array(
 				'type' => 'error',
@@ -260,11 +296,9 @@ final class CC_Form {
 	}
 
 	/**
-	 * フォームの描画。
-	 *
-	 * @param array<string, string>|string $atts 属性。
+	 * フォームの描画。このショートコードは属性を取らない。
 	 */
-	public static function render( $atts = array() ): string {
+	public static function render(): string {
 		wp_enqueue_style( 'clinic-contact' );
 
 		ob_start();

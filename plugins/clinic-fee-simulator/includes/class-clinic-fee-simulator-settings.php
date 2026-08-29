@@ -12,7 +12,7 @@ defined( 'ABSPATH' ) || exit;
 /**
  * 設定画面と保存処理。
  */
-final class CFS_Settings {
+final class Clinic_Fee_Simulator_Settings {
 
 	/**
 	 * 既定値。
@@ -84,7 +84,7 @@ final class CFS_Settings {
 	 * @return array<string, int|string>
 	 */
 	public static function get(): array {
-		$saved = get_option( CFS_OPTION, array() );
+		$saved = get_option( CLINIC_FEE_SIMULATOR_OPTION, array() );
 		if ( ! is_array( $saved ) ) {
 			$saved = array();
 		}
@@ -118,7 +118,7 @@ final class CFS_Settings {
 	public static function register(): void {
 		register_setting(
 			'cfs_group',
-			CFS_OPTION,
+			CLINIC_FEE_SIMULATOR_OPTION,
 			array(
 				'type'              => 'array',
 				'sanitize_callback' => array( __CLASS__, 'sanitize' ),
@@ -182,7 +182,7 @@ final class CFS_Settings {
 			 */
 			if ( 1 !== preg_match( '/\A[0-9]+\z/', $raw ) ) {
 				add_settings_error(
-					CFS_OPTION,
+					CLINIC_FEE_SIMULATOR_OPTION,
 					'cfs_' . $key,
 					sprintf(
 						/* translators: %s: 項目名 */
@@ -197,7 +197,7 @@ final class CFS_Settings {
 			$value = (int) $raw;
 			if ( $value < $min || $value > $max ) {
 				add_settings_error(
-					CFS_OPTION,
+					CLINIC_FEE_SIMULATOR_OPTION,
 					'cfs_' . $key,
 					sprintf(
 						/* translators: 1: 項目名, 2: 最小値, 3: 最大値 */
@@ -229,7 +229,7 @@ final class CFS_Settings {
 		$settings = self::get();
 		$key      = $args['key'];
 		$value    = $settings[ $key ] ?? '';
-		$name     = sprintf( '%s[%s]', CFS_OPTION, $key );
+		$name     = sprintf( '%s[%s]', CLINIC_FEE_SIMULATOR_OPTION, $key );
 
 		if ( 'textarea' === $args['type'] ) {
 			printf(

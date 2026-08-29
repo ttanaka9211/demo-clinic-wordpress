@@ -1,0 +1,76 @@
+<?xml version="1.0"?>
+<ruleset name="demo-clinic">
+	<description>WordPress Coding Standards と、宣言している PHP 8.0 以上で動くことの確認。</description>
+
+	<file>themes/sakura-clinic</file>
+	<file>plugins/clinic-fee-simulator</file>
+	<file>plugins/clinic-contact</file>
+
+	<exclude-pattern>*/vendor/*</exclude-pattern>
+	<exclude-pattern>*/languages/*</exclude-pattern>
+
+	<arg name="extensions" value="php"/>
+	<arg name="colors"/>
+	<arg value="sp"/>
+
+	<rule ref="WordPress"/>
+
+	<!--
+		各パッケージのテキストドメインと接頭辞。
+		指定しないと WPCS は「他のプラグインと衝突しうる」として警告する。
+	-->
+	<rule ref="WordPress.WP.I18n">
+		<properties>
+			<property name="text_domain" type="array">
+				<element value="sakura-clinic"/>
+				<element value="clinic-fee-simulator"/>
+				<element value="clinic-contact"/>
+			</property>
+		</properties>
+	</rule>
+	<rule ref="WordPress.NamingConventions.PrefixAllGlobals">
+		<properties>
+			<property name="prefixes" type="array">
+				<element value="sakura_clinic"/>
+				<element value="SAKURA_CLINIC"/>
+				<element value="Clinic_Fee_Simulator"/>
+				<element value="clinic_fee_simulator"/>
+				<element value="CLINIC_FEE_SIMULATOR"/>
+				<element value="Clinic_Contact"/>
+				<element value="clinic_contact"/>
+				<element value="CLINIC_CONTACT"/>
+			</property>
+		</properties>
+	</rule>
+
+	<!--
+		コメントを日本語で書いているため通らない規則。
+		いずれも「英語の文として正しいか」を見るもので、内容の良し悪しとは関係ない。
+		英語に直せば通るが、読み手（このサイトを引き継ぐ人）は日本語話者なので、
+		規則に合わせてコメントを英語にするほうが実害が大きいと判断した。
+	-->
+	<rule ref="Squiz.Commenting.FunctionComment.ParamCommentFullStop">
+		<severity>0</severity>
+	</rule>
+	<rule ref="Squiz.Commenting.InlineComment.InvalidEndChar">
+		<severity>0</severity>
+	</rule>
+	<rule ref="Generic.Commenting.DocComment.ShortNotCapital">
+		<severity>0</severity>
+	</rule>
+	<rule ref="Generic.Commenting.DocComment.LongNotCapital">
+		<severity>0</severity>
+	</rule>
+
+	<!--
+		$phpmailer->SMTPAuth / ->Host などは PHPMailer 側のプロパティで、
+		こちらの命名ではない。改名する権限がないので対象から外す。
+	-->
+	<rule ref="WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase">
+		<exclude-pattern>*/class-clinic-contact-mailer.php</exclude-pattern>
+	</rule>
+
+	<!-- 宣言している Requires PHP: 8.0 が本当かを見る。 -->
+	<config name="testVersion" value="8.0-"/>
+	<rule ref="PHPCompatibilityWP"/>
+</ruleset>

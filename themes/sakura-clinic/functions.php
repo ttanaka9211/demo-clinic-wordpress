@@ -38,11 +38,15 @@ add_action( 'after_setup_theme', 'sakura_clinic_setup' );
  * スタイルの読み込み。ベタ書きせず必ず wp_enqueue_* を通す。
  */
 function sakura_clinic_assets(): void {
+	/*
+	 * 外部の CSS にバージョンを付けない。?ver= を足すと Google 側の
+	 * キャッシュから外れるだけで、こちらが更新できるものでもない。
+	 */
 	wp_enqueue_style(
 		'sakura-clinic-fonts',
 		'https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap',
 		array(),
-		null
+		null // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion
 	);
 	wp_enqueue_style(
 		'sakura-clinic',
@@ -55,10 +59,17 @@ add_action( 'wp_enqueue_scripts', 'sakura_clinic_assets' );
 
 /**
  * Google Fonts への事前接続（表示速度対策）。
+ *
+ * @param string[] $urls     この関係の URL 一覧。
+ * @param string   $relation 関係の種類。
+ * @return string[]
  */
 function sakura_clinic_resource_hints( array $urls, string $relation ): array {
 	if ( 'preconnect' === $relation ) {
-		$urls[] = array( 'href' => 'https://fonts.gstatic.com', 'crossorigin' );
+		$urls[] = array(
+			'href' => 'https://fonts.gstatic.com',
+			'crossorigin',
+		);
 	}
 	return $urls;
 }
@@ -74,19 +85,56 @@ add_filter( 'wp_resource_hints', 'sakura_clinic_resource_hints', 10, 2 );
  */
 function sakura_clinic_fields(): array {
 	return array(
-		'clinic_sub'    => array( 'label' => '院名の英字表記', 'default' => 'SAKURA SEIKOTSUIN' ),
-		'clinic_tel'    => array( 'label' => '電話番号', 'default' => '06-0000-0000' ),
-		'clinic_hours'  => array( 'label' => '受付時間', 'default' => "平日 9:00〜20:00\n土日 9:00〜17:00（木曜休）" , 'type' => 'textarea' ),
-		'clinic_addr'   => array( 'label' => '所在地', 'default' => '大阪市北区○○ 1-2-3 ○○ビル 2F' ),
-		'clinic_access' => array( 'label' => 'アクセス', 'default' => '各線○○駅 5番出口から徒歩5分' ),
-		'clinic_park'   => array( 'label' => '駐車場', 'default' => '提携駐車場あり（2時間無料）' ),
+		'clinic_sub'    => array(
+			'label'   => '院名の英字表記',
+			'default' => 'SAKURA SEIKOTSUIN',
+		),
+		'clinic_tel'    => array(
+			'label'   => '電話番号',
+			'default' => '06-0000-0000',
+		),
+		'clinic_hours'  => array(
+			'label'   => '受付時間',
+			'default' => "平日 9:00〜20:00\n土日 9:00〜17:00（木曜休）",
+			'type'    => 'textarea',
+		),
+		'clinic_addr'   => array(
+			'label'   => '所在地',
+			'default' => '大阪市北区○○ 1-2-3 ○○ビル 2F',
+		),
+		'clinic_access' => array(
+			'label'   => 'アクセス',
+			'default' => '各線○○駅 5番出口から徒歩5分',
+		),
+		'clinic_park'   => array(
+			'label'   => '駐車場',
+			'default' => '提携駐車場あり（2時間無料）',
+		),
 
-		'hero_badge'    => array( 'label' => 'ヒーロー：バッジ', 'default' => '交通事故・自賠責保険に対応' ),
-		'hero_title'    => array( 'label' => 'ヒーロー：見出し', 'default' => "その痛み、\n我慢しなくて大丈夫です。", 'type' => 'textarea' ),
-		'hero_lead'     => array( 'label' => 'ヒーロー：本文', 'default' => '交通事故のあとの首や腰の不調に、自賠責保険を使った施術で対応しています。保険会社とのやりとりや書類のご相談も承ります。', 'type' => 'textarea' ),
+		'hero_badge'    => array(
+			'label'   => 'ヒーロー：バッジ',
+			'default' => '交通事故・自賠責保険に対応',
+		),
+		'hero_title'    => array(
+			'label'   => 'ヒーロー：見出し',
+			'default' => "その痛み、\n我慢しなくて大丈夫です。",
+			'type'    => 'textarea',
+		),
+		'hero_lead'     => array(
+			'label'   => 'ヒーロー：本文',
+			'default' => '交通事故のあとの首や腰の不調に、自賠責保険を使った施術で対応しています。保険会社とのやりとりや書類のご相談も承ります。',
+			'type'    => 'textarea',
+		),
 
-		'cta_title'     => array( 'label' => '最終CTA：見出し', 'default' => 'まずは、お電話でご相談ください' ),
-		'cta_lead'      => array( 'label' => '最終CTA：本文', 'default' => 'シミュレーターの結果をもとに、通院の頻度や進め方をご案内します。ご相談だけでもかまいません。', 'type' => 'textarea' ),
+		'cta_title'     => array(
+			'label'   => '最終CTA：見出し',
+			'default' => 'まずは、お電話でご相談ください',
+		),
+		'cta_lead'      => array(
+			'label'   => '最終CTA：本文',
+			'default' => 'シミュレーターの結果をもとに、通院の頻度や進め方をご案内します。ご相談だけでもかまいません。',
+			'type'    => 'textarea',
+		),
 
 		'sample_notice' => array(
 			'label'   => 'サンプル作品の注記',
@@ -98,6 +146,8 @@ function sakura_clinic_fields(): array {
 
 /**
  * 設定値の取得ヘルパー。
+ *
+ * @param string $key 設定キー。
  */
 function sakura_clinic_get( string $key ): string {
 	$fields = sakura_clinic_fields();
@@ -110,6 +160,8 @@ function sakura_clinic_get( string $key ): string {
 /**
  * カスタマイザーへの登録。
  * sanitize_callback は必須（未指定だと WordPress が保存を拒否する）。
+ *
+ * @param WP_Customize_Manager $wp_customize カスタマイザー。
  */
 function sakura_clinic_customize_register( WP_Customize_Manager $wp_customize ): void {
 	$wp_customize->add_section(
@@ -145,7 +197,11 @@ function sakura_clinic_customize_register( WP_Customize_Manager $wp_customize ):
 	// 写真を入れたくなったときの差し替え口。未設定なら線画を使う。
 	$wp_customize->add_setting(
 		'hero_image',
-		array( 'default' => '', 'transport' => 'refresh', 'sanitize_callback' => 'absint' )
+		array(
+			'default'           => '',
+			'transport'         => 'refresh',
+			'sanitize_callback' => 'absint',
+		)
 	);
 	$wp_customize->add_control(
 		new WP_Customize_Media_Control(
@@ -171,6 +227,8 @@ function sakura_clinic_tel_href(): string {
 
 /**
  * 改行を <br> にしつつエスケープする（見出し用）。
+ *
+ * @param string $text 対象の文字列。
  */
 function sakura_clinic_nl2br_esc( string $text ): string {
 	return wp_kses( nl2br( esc_html( $text ) ), array( 'br' => array() ) );
@@ -187,7 +245,11 @@ function sakura_clinic_hero_visual(): string {
 			$image_id,
 			'large',
 			false,
-			array( 'class' => 'hero__photo', 'loading' => 'eager', 'decoding' => 'async' )
+			array(
+				'class'    => 'hero__photo',
+				'loading'  => 'eager',
+				'decoding' => 'async',
+			)
 		);
 		if ( '' !== $html ) {
 			return $html;
@@ -217,6 +279,8 @@ add_action( 'init', 'sakura_clinic_clean_head' );
 /**
  * 生成される CSS/JS の URL から ?ver=<WPバージョン> を落とす。
  * テーマ側で明示的に付けたバージョンは残す。
+ *
+ * @param string $src 対象の URL。
  */
 function sakura_clinic_strip_core_ver( string $src ): string {
 	$wp_version = get_bloginfo( 'version' );

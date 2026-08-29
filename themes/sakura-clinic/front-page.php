@@ -15,34 +15,74 @@ defined( 'ABSPATH' ) || exit;
 
 get_header();
 
-$tel_href = sakura_clinic_tel_href();
+$sakura_clinic_tel_href = sakura_clinic_tel_href();
 
-$worries = array(
+$sakura_clinic_worries = array(
 	__( '事故のあとから首や肩が重い', 'sakura-clinic' ),
 	__( '病院で異常なしと言われたが痛みが残る', 'sakura-clinic' ),
 	__( '保険会社とのやりとりがよく分からない', 'sakura-clinic' ),
 	__( '仕事帰りに通える時間帯がない', 'sakura-clinic' ),
 );
 
-$features = array(
-	array( 'icon' => 'car',      'title' => __( '交通事故に対応', 'sakura-clinic' ), 'text' => __( '自賠責保険を使った施術を承っています。', 'sakura-clinic' ) ),
-	array( 'icon' => 'document', 'title' => __( '書類のご相談', 'sakura-clinic' ), 'text' => __( '保険会社への連絡や必要書類をご案内します。', 'sakura-clinic' ) ),
-	array( 'icon' => 'clock',    'title' => __( '夜20時まで受付', 'sakura-clinic' ), 'text' => __( '平日はお仕事帰りの時間にも通えます。', 'sakura-clinic' ) ),
-	array( 'icon' => 'train',    'title' => __( '駅から徒歩5分', 'sakura-clinic' ), 'text' => __( '提携駐車場もご利用いただけます。', 'sakura-clinic' ) ),
+$sakura_clinic_features = array(
+	array(
+		'icon'  => 'car',
+		'title' => __( '交通事故に対応', 'sakura-clinic' ),
+		'text'  => __( '自賠責保険を使った施術を承っています。', 'sakura-clinic' ),
+	),
+	array(
+		'icon'  => 'document',
+		'title' => __( '書類のご相談', 'sakura-clinic' ),
+		'text'  => __( '保険会社への連絡や必要書類をご案内します。', 'sakura-clinic' ),
+	),
+	array(
+		'icon'  => 'clock',
+		'title' => __( '夜20時まで受付', 'sakura-clinic' ),
+		'text'  => __( '平日はお仕事帰りの時間にも通えます。', 'sakura-clinic' ),
+	),
+	array(
+		'icon'  => 'train',
+		'title' => __( '駅から徒歩5分', 'sakura-clinic' ),
+		'text'  => __( '提携駐車場もご利用いただけます。', 'sakura-clinic' ),
+	),
 );
 
-$flow = array(
-	array( 'title' => __( 'お電話でご予約', 'sakura-clinic' ), 'text' => __( '事故の状況と、いまお困りの症状をお聞かせください。', 'sakura-clinic' ) ),
-	array( 'title' => __( '問診・お身体の確認', 'sakura-clinic' ), 'text' => __( '痛みの出かたや動かせる範囲を確認します。', 'sakura-clinic' ) ),
-	array( 'title' => __( '施術の内容をご説明', 'sakura-clinic' ), 'text' => __( '通院の目安と進め方をお伝えしてから始めます。', 'sakura-clinic' ) ),
-	array( 'title' => __( '施術・次回のご案内', 'sakura-clinic' ), 'text' => __( 'ご都合に合わせて次回の予定を決めます。', 'sakura-clinic' ) ),
+$sakura_clinic_flow = array(
+	array(
+		'title' => __( 'お電話でご予約', 'sakura-clinic' ),
+		'text'  => __( '事故の状況と、いまお困りの症状をお聞かせください。', 'sakura-clinic' ),
+	),
+	array(
+		'title' => __( '問診・お身体の確認', 'sakura-clinic' ),
+		'text'  => __( '痛みの出かたや動かせる範囲を確認します。', 'sakura-clinic' ),
+	),
+	array(
+		'title' => __( '施術の内容をご説明', 'sakura-clinic' ),
+		'text'  => __( '通院の目安と進め方をお伝えしてから始めます。', 'sakura-clinic' ),
+	),
+	array(
+		'title' => __( '施術・次回のご案内', 'sakura-clinic' ),
+		'text'  => __( 'ご都合に合わせて次回の予定を決めます。', 'sakura-clinic' ),
+	),
 );
 
-$faq = array(
-	array( 'q' => __( '費用はどのくらいかかりますか。', 'sakura-clinic' ), 'a' => __( '保険の種類と通院の頻度によって変わります。上の料金シミュレーターで目安をご確認いただけます。', 'sakura-clinic' ) ),
-	array( 'q' => __( '病院に通いながらでも大丈夫ですか。', 'sakura-clinic' ), 'a' => __( '併用されている方もいらっしゃいます。通院状況をお聞かせいただければ、進め方をご相談します。', 'sakura-clinic' ) ),
-	array( 'q' => __( '保険会社への連絡は自分でしますか。', 'sakura-clinic' ), 'a' => __( 'ご自身でご連絡いただく形が基本ですが、伝え方が分からない場合はご案内しています。', 'sakura-clinic' ) ),
-	array( 'q' => __( '予約なしでも受けられますか。', 'sakura-clinic' ), 'a' => __( 'お待たせすることがあるため、お電話でのご予約をおすすめしています。', 'sakura-clinic' ) ),
+$sakura_clinic_faq = array(
+	array(
+		'q' => __( '費用はどのくらいかかりますか。', 'sakura-clinic' ),
+		'a' => __( '保険の種類と通院の頻度によって変わります。上の料金シミュレーターで目安をご確認いただけます。', 'sakura-clinic' ),
+	),
+	array(
+		'q' => __( '病院に通いながらでも大丈夫ですか。', 'sakura-clinic' ),
+		'a' => __( '併用されている方もいらっしゃいます。通院状況をお聞かせいただければ、進め方をご相談します。', 'sakura-clinic' ),
+	),
+	array(
+		'q' => __( '保険会社への連絡は自分でしますか。', 'sakura-clinic' ),
+		'a' => __( 'ご自身でご連絡いただく形が基本ですが、伝え方が分からない場合はご案内しています。', 'sakura-clinic' ),
+	),
+	array(
+		'q' => __( '予約なしでも受けられますか。', 'sakura-clinic' ),
+		'a' => __( 'お待たせすることがあるため、お電話でのご予約をおすすめしています。', 'sakura-clinic' ),
+	),
 );
 ?>
 
@@ -54,7 +94,7 @@ $faq = array(
 			<p class="hero__lead"><?php echo esc_html( sakura_clinic_get( 'hero_lead' ) ); ?></p>
 
 			<div class="hero__actions">
-				<a class="btn btn--primary" href="<?php echo esc_url( $tel_href ); ?>">
+				<a class="btn btn--primary" href="<?php echo esc_url( $sakura_clinic_tel_href ); ?>">
 					<?php echo sakura_clinic_icon( 'phone', 'btn__icon' ); // phpcs:ignore WordPress.Security.EscapeOutput ?>
 					<?php esc_html_e( '電話で相談する', 'sakura-clinic' ); ?>
 				</a>
@@ -85,8 +125,8 @@ $faq = array(
 			<span class="rule"></span>
 		</div>
 		<ul class="worries">
-			<?php foreach ( $worries as $worry ) : ?>
-				<li class="worry"><?php echo sakura_clinic_icon( 'question' ); // phpcs:ignore WordPress.Security.EscapeOutput ?><span><?php echo esc_html( $worry ); ?></span></li>
+			<?php foreach ( $sakura_clinic_worries as $sakura_clinic_worry ) : ?>
+				<li class="worry"><?php echo sakura_clinic_icon( 'question' ); // phpcs:ignore WordPress.Security.EscapeOutput ?><span><?php echo esc_html( $sakura_clinic_worry ); ?></span></li>
 			<?php endforeach; ?>
 		</ul>
 	</div>
@@ -118,11 +158,11 @@ $faq = array(
 			<span class="rule"></span>
 		</div>
 		<div class="features">
-			<?php foreach ( $features as $feature ) : ?>
+			<?php foreach ( $sakura_clinic_features as $sakura_clinic_feature ) : ?>
 				<div class="feature">
-					<?php echo sakura_clinic_icon( $feature['icon'], 'feature__icon' ); // phpcs:ignore WordPress.Security.EscapeOutput ?>
-					<h3 class="feature__title"><?php echo esc_html( $feature['title'] ); ?></h3>
-					<p class="feature__text"><?php echo esc_html( $feature['text'] ); ?></p>
+					<?php echo sakura_clinic_icon( $sakura_clinic_feature['icon'], 'feature__icon' ); // phpcs:ignore WordPress.Security.EscapeOutput ?>
+					<h3 class="feature__title"><?php echo esc_html( $sakura_clinic_feature['title'] ); ?></h3>
+					<p class="feature__text"><?php echo esc_html( $sakura_clinic_feature['text'] ); ?></p>
 				</div>
 			<?php endforeach; ?>
 		</div>
@@ -137,10 +177,10 @@ $faq = array(
 			<span class="rule"></span>
 		</div>
 		<ol class="flow">
-			<?php foreach ( $flow as $step ) : ?>
+			<?php foreach ( $sakura_clinic_flow as $sakura_clinic_step ) : ?>
 				<li class="flow__item">
-					<p class="flow__title"><?php echo esc_html( $step['title'] ); ?></p>
-					<p class="flow__text"><?php echo esc_html( $step['text'] ); ?></p>
+					<p class="flow__title"><?php echo esc_html( $sakura_clinic_step['title'] ); ?></p>
+					<p class="flow__text"><?php echo esc_html( $sakura_clinic_step['text'] ); ?></p>
 				</li>
 			<?php endforeach; ?>
 		</ol>
@@ -155,10 +195,10 @@ $faq = array(
 			<span class="rule"></span>
 		</div>
 		<div class="faq">
-			<?php foreach ( $faq as $item ) : ?>
+			<?php foreach ( $sakura_clinic_faq as $sakura_clinic_item ) : ?>
 				<details class="faq__item">
-					<summary class="faq__q"><span><?php echo esc_html( $item['q'] ); ?></span></summary>
-					<p class="faq__a"><span><?php echo esc_html( $item['a'] ); ?></span></p>
+					<summary class="faq__q"><span><?php echo esc_html( $sakura_clinic_item['q'] ); ?></span></summary>
+					<p class="faq__a"><span><?php echo esc_html( $sakura_clinic_item['a'] ); ?></span></p>
 				</details>
 			<?php endforeach; ?>
 		</div>
@@ -191,7 +231,7 @@ $faq = array(
 	<div class="container container--sm cta">
 		<h2 class="cta__title"><?php echo esc_html( sakura_clinic_get( 'cta_title' ) ); ?></h2>
 		<p class="cta__lead"><?php echo esc_html( sakura_clinic_get( 'cta_lead' ) ); ?></p>
-		<a class="cta__tel" href="<?php echo esc_url( $tel_href ); ?>">
+		<a class="cta__tel" href="<?php echo esc_url( $sakura_clinic_tel_href ); ?>">
 			<?php echo sakura_clinic_icon( 'phone' ); // phpcs:ignore WordPress.Security.EscapeOutput ?>
 			<?php echo esc_html( sakura_clinic_get( 'clinic_tel' ) ); ?>
 		</a>

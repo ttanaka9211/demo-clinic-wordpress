@@ -18,7 +18,7 @@ defined( 'ABSPATH' ) || exit;
 /**
  * PHPMailer を SMTP に切り替える。
  */
-final class CC_Mailer {
+final class Clinic_Contact_Mailer {
 
 	/**
 	 * フック登録。
@@ -63,6 +63,8 @@ final class CC_Mailer {
 
 	/**
 	 * 送信元アドレス。SPF に含まれるドメインで送る。
+	 *
+	 * @param string $from WordPress が渡す既定の差出人。
 	 */
 	public static function from_address( string $from ): string {
 		// SMTP AUTH のログインIDと差出人アドレスは別物。
@@ -76,10 +78,14 @@ final class CC_Mailer {
 	}
 
 	/**
-	 * 送信者名。
+	 * 送信者名。サイト名を使い、空ならもとの値を残す。
+	 *
+	 * @param string $name WordPress が渡す既定の送信者名。
 	 */
 	public static function from_name( string $name ): string {
-		return (string) get_bloginfo( 'name' );
+		$blogname = trim( (string) get_bloginfo( 'name' ) );
+
+		return '' !== $blogname ? $blogname : $name;
 	}
 
 	/**
@@ -89,6 +95,8 @@ final class CC_Mailer {
 	 */
 	public static function log_failure( $error ): void {
 		if ( $error instanceof WP_Error ) {
+			// 送信の失敗は握り潰さない。管理画面に出す先が無いのでサーバのログに残す。
+			// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
 			error_log( '[clinic-contact] wp_mail failed: ' . $error->get_error_message() );
 		}
 	}

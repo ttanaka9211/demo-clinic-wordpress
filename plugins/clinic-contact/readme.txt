@@ -66,7 +66,7 @@ License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
 レート制限です。同一の送信元から 10 分あたり 3 通までにしています。
 オフィスや携帯回線のように送信元が共有される環境では、別の人の送信と合算されます。
-回数を変える場合は `CC_Form::RL_MAX` と `RL_WINDOW` を調整してください。
+回数を変える場合は `Clinic_Contact_Form::RL_MAX` と `RL_WINDOW` を調整してください。
 
 = 届くけれど迷惑メールに入ります =
 

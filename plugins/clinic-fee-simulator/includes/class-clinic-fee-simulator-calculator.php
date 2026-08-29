@@ -15,7 +15,7 @@ defined( 'ABSPATH' ) || exit;
 /**
  * 費用の目安を計算する。
  */
-final class CFS_Calculator {
+final class Clinic_Fee_Simulator_Calculator {
 
 	public const INSURANCE_TYPES = array( 'jibaiseki', 'kenpo', 'jihi' );
 
@@ -72,7 +72,15 @@ final class CFS_Calculator {
 			$insurance = 'jibaiseki';
 		}
 
-		$frequency = isset( $raw['frequency'] ) ? absint( $raw['frequency'] ) : 1;
+		/*
+		 * absint() を使わない。負数の符号を落としてしまうため、
+		 * -2 が 2 になり「週2回」として通っていた。
+		 * 選択肢に無い値は既定へ丸めるが、丸める前に別の値へ化けさせない。
+		 */
+		$frequency = 1;
+		if ( isset( $raw['frequency'] ) && is_numeric( $raw['frequency'] ) && (float) $raw['frequency'] >= 0 ) {
+			$frequency = (int) $raw['frequency'];
+		}
 		if ( ! array_key_exists( $frequency, self::frequencies() ) ) {
 			$frequency = 1;
 		}
@@ -103,7 +111,7 @@ final class CFS_Calculator {
 	 */
 	public static function estimate( array $raw ): array {
 		$in       = self::normalize( $raw );
-		$settings = CFS_Settings::get();
+		$settings = Clinic_Fee_Simulator_Settings::get();
 
 		$base      = (int) $settings['base_price'];
 		$surcharge = count( $in['symptoms'] ) >= (int) $settings['symptom_thresh']
@@ -122,11 +130,24 @@ final class CFS_Calculator {
 			case 'kenpo':
 				$rate     = max( 0, min( 100, (int) $settings['kenpo_rate'] ) );
 				$self_pay = (int) floor( $monthly * $rate / 100 );
-				$note     = sprintf(
-					/* translators: %d: 自己負担割合 */
-					__( '健康保険が適用される場合の目安です（自己負担 %d 割で計算）。', 'clinic-fee-simulator' ),
-					(int) round( $rate / 10 )
-				);
+
+				/*
+				 * 「割」で言い換えるのは 10 の倍数のときだけにする。
+				 * round( $rate / 10 ) だと 25% を「3割」と書いてしまい、
+				 * 計算に使った割合と案内する割合が食い違う。
+				 * 窓口で示す額の話なので、ここがずれるのは困る。
+				 */
+				$note = 0 === $rate % 10
+					? sprintf(
+						/* translators: %d: 自己負担の割合（割） */
+						__( '健康保険が適用される場合の目安です（自己負担 %d 割で計算）。', 'clinic-fee-simulator' ),
+						intdiv( $rate, 10 )
+					)
+					: sprintf(
+						/* translators: %d: 自己負担の割合（％） */
+						__( '健康保険が適用される場合の目安です（自己負担 %d％ で計算）。', 'clinic-fee-simulator' ),
+						$rate
+					);
 				break;
 
 			default:

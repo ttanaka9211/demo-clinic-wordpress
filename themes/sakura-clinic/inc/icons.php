@@ -32,8 +32,11 @@ function sakura_clinic_icon_paths(): array {
 
 /**
  * アイコンを出力する。装飾目的なので aria-hidden にする。
+ *
+ * @param string $name       アイコン名。
+ * @param string $class_name 付与する class 属性。
  */
-function sakura_clinic_icon( string $name, string $class = '' ): string {
+function sakura_clinic_icon( string $name, string $class_name = '' ): string {
 	$paths = sakura_clinic_icon_paths();
 	if ( ! isset( $paths[ $name ] ) ) {
 		return '';
@@ -41,7 +44,7 @@ function sakura_clinic_icon( string $name, string $class = '' ): string {
 
 	return sprintf(
 		'<svg class="%s" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">%s</svg>',
-		esc_attr( $class ),
+		esc_attr( $class_name ),
 		$paths[ $name ]
 	);
 }

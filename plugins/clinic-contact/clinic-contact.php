@@ -18,21 +18,21 @@ declare( strict_types = 1 );
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'CC_VERSION', '1.1.0' );
-define( 'CC_FILE', __FILE__ );
-define( 'CC_DIR', plugin_dir_path( __FILE__ ) );
-define( 'CC_URL', plugin_dir_url( __FILE__ ) );
+define( 'CLINIC_CONTACT_VERSION', '1.1.0' );
+define( 'CLINIC_CONTACT_FILE', __FILE__ );
+define( 'CLINIC_CONTACT_DIR', plugin_dir_path( __FILE__ ) );
+define( 'CLINIC_CONTACT_URL', plugin_dir_url( __FILE__ ) );
 
-require_once CC_DIR . 'includes/class-cc-mailer.php';
-require_once CC_DIR . 'includes/class-cc-form.php';
+require_once CLINIC_CONTACT_DIR . 'includes/class-clinic-contact-mailer.php';
+require_once CLINIC_CONTACT_DIR . 'includes/class-clinic-contact-form.php';
 
 /**
  * 起動。
  */
-function cc_bootstrap(): void {
-	load_plugin_textdomain( 'clinic-contact', false, dirname( plugin_basename( CC_FILE ) ) . '/languages' );
+function clinic_contact_bootstrap(): void {
+	load_plugin_textdomain( 'clinic-contact', false, dirname( plugin_basename( CLINIC_CONTACT_FILE ) ) . '/languages' );
 
-	CC_Mailer::init();
-	CC_Form::init();
+	Clinic_Contact_Mailer::init();
+	Clinic_Contact_Form::init();
 }
-add_action( 'plugins_loaded', 'cc_bootstrap' );
+add_action( 'plugins_loaded', 'clinic_contact_bootstrap' );

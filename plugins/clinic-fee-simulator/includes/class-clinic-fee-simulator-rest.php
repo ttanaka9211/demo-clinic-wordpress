@@ -15,7 +15,7 @@ defined( 'ABSPATH' ) || exit;
 /**
  * 費用の目安を返す REST ルート。
  */
-final class CFS_Rest {
+final class Clinic_Fee_Simulator_Rest {
 
 	public const NAMESPACE = 'clinic-simulator/v1';
 
@@ -44,7 +44,7 @@ final class CFS_Rest {
 					'insurance' => array(
 						'type'              => 'string',
 						'required'          => false,
-						'enum'              => CFS_Calculator::INSURANCE_TYPES,
+						'enum'              => Clinic_Fee_Simulator_Calculator::INSURANCE_TYPES,
 						'sanitize_callback' => 'sanitize_key',
 					),
 					'frequency' => array(
@@ -70,7 +70,7 @@ final class CFS_Rest {
 	 * @param WP_REST_Request $request リクエスト。
 	 */
 	public static function handle( WP_REST_Request $request ): WP_REST_Response {
-		$result = CFS_Calculator::estimate(
+		$result = Clinic_Fee_Simulator_Calculator::estimate(
 			array(
 				'insurance' => $request->get_param( 'insurance' ),
 				'frequency' => $request->get_param( 'frequency' ),

@@ -5,6 +5,11 @@
 !.gitignore
 !README.md
 !LICENSE
+!composer.json
+!phpcs.xml.dist
+!phpunit.xml.dist
+!tests/
+!.github/
 !themes/
 themes/*
 !themes/sakura-clinic/
@@ -22,3 +27,8 @@ plugins/*
 *.orig
 *.save
 *.swp
+
+# 開発用の依存。CI では毎回入れ直すのでコミットしない。
+/vendor/
+composer.lock
+.phpunit.result.cache

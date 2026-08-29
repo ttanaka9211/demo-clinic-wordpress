@@ -15,7 +15,7 @@ defined( 'ABSPATH' ) || exit;
 /**
  * ショートコードの登録と描画。
  */
-final class CFS_Shortcode {
+final class Clinic_Fee_Simulator_Shortcode {
 
 	/**
 	 * フック登録。
@@ -29,16 +29,14 @@ final class CFS_Shortcode {
 	 * アセットを登録する。実際の読み込みはショートコードが使われたときだけ。
 	 */
 	public static function register_assets(): void {
-		wp_register_style( 'cfs-simulator', CFS_URL . 'assets/simulator.css', array(), CFS_VERSION );
-		wp_register_script( 'cfs-simulator', CFS_URL . 'assets/simulator.js', array(), CFS_VERSION, true );
+		wp_register_style( 'cfs-simulator', CLINIC_FEE_SIMULATOR_URL . 'assets/simulator.css', array(), CLINIC_FEE_SIMULATOR_VERSION );
+		wp_register_script( 'cfs-simulator', CLINIC_FEE_SIMULATOR_URL . 'assets/simulator.js', array(), CLINIC_FEE_SIMULATOR_VERSION, true );
 	}
 
 	/**
 	 * 描画。
-	 *
-	 * @param array<string, string>|string $atts 属性。
 	 */
-	public static function render( $atts = array() ): string {
+	public static function render(): string {
 		wp_enqueue_style( 'cfs-simulator' );
 		wp_enqueue_script( 'cfs-simulator' );
 
@@ -46,13 +44,18 @@ final class CFS_Shortcode {
 			'cfs-simulator',
 			'cfsConfig',
 			array(
-				'endpoint' => esc_url_raw( rest_url( CFS_Rest::NAMESPACE . '/estimate' ) ),
+				'endpoint' => esc_url_raw( rest_url( Clinic_Fee_Simulator_Rest::NAMESPACE . '/estimate' ) ),
 				'nonce'    => wp_create_nonce( 'wp_rest' ),
 			)
 		);
 
-		$settings = CFS_Settings::get();
-		$initial  = CFS_Calculator::estimate( array( 'insurance' => 'jibaiseki', 'frequency' => 1 ) );
+		$settings = Clinic_Fee_Simulator_Settings::get();
+		$initial  = Clinic_Fee_Simulator_Calculator::estimate(
+			array(
+				'insurance' => 'jibaiseki',
+				'frequency' => 1,
+			)
+		);
 
 		ob_start();
 		?>
@@ -61,7 +64,7 @@ final class CFS_Shortcode {
 				<fieldset class="cfs__group">
 					<legend class="cfs__legend"><?php esc_html_e( 'STEP 1　気になる症状（複数選択できます）', 'clinic-fee-simulator' ); ?></legend>
 					<div class="cfs__chips">
-						<?php foreach ( CFS_Calculator::symptoms() as $key => $label ) : ?>
+						<?php foreach ( Clinic_Fee_Simulator_Calculator::symptoms() as $key => $label ) : ?>
 							<label class="cfs__chip">
 								<input type="checkbox" name="symptoms[]" value="<?php echo esc_attr( $key ); ?>">
 								<span><?php echo esc_html( $label ); ?></span>
@@ -73,7 +76,7 @@ final class CFS_Shortcode {
 				<fieldset class="cfs__group">
 					<legend class="cfs__legend"><?php esc_html_e( 'STEP 2　保険の種類', 'clinic-fee-simulator' ); ?></legend>
 					<div class="cfs__chips cfs__chips--3">
-						<?php foreach ( CFS_Calculator::insurances() as $key => $label ) : ?>
+						<?php foreach ( Clinic_Fee_Simulator_Calculator::insurances() as $key => $label ) : ?>
 							<label class="cfs__chip">
 								<input type="radio" name="insurance" value="<?php echo esc_attr( $key ); ?>" <?php checked( 'jibaiseki', $key ); ?>>
 								<span><?php echo esc_html( $label ); ?></span>
@@ -85,7 +88,7 @@ final class CFS_Shortcode {
 				<fieldset class="cfs__group">
 					<legend class="cfs__legend"><?php esc_html_e( 'STEP 3　通院の頻度', 'clinic-fee-simulator' ); ?></legend>
 					<div class="cfs__chips cfs__chips--3">
-						<?php foreach ( CFS_Calculator::frequencies() as $key => $label ) : ?>
+						<?php foreach ( Clinic_Fee_Simulator_Calculator::frequencies() as $key => $label ) : ?>
 							<label class="cfs__chip">
 								<input type="radio" name="frequency" value="<?php echo esc_attr( (string) $key ); ?>" <?php checked( 1, $key ); ?>>
 								<span><?php echo esc_html( $label ); ?></span>
@@ -125,6 +128,8 @@ final class CFS_Shortcode {
 
 	/**
 	 * 円表記に整える。
+	 *
+	 * @param int $value 金額。
 	 */
 	private static function yen( int $value ): string {
 		return '¥' . number_format_i18n( $value );
