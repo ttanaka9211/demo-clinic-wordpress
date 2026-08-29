@@ -3,7 +3,7 @@
  * Plugin Name:       Clinic Fee Simulator
  * Plugin URI:        https://demo-clinic.hatchdogs.net/
  * Description:       整骨院向けの施術費用シミュレーター。ショートコード [clinic_simulator] で設置し、料金表は管理画面から編集できます。
- * Version:           1.0.0
+ * Version:           1.1.0
  * Requires at least: 6.0
  * Requires PHP:      8.0
  * Author:            hatchdogs
@@ -18,7 +18,7 @@ declare( strict_types = 1 );
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'CFS_VERSION', '1.0.0' );
+define( 'CFS_VERSION', '1.1.0' );
 define( 'CFS_FILE', __FILE__ );
 define( 'CFS_DIR', plugin_dir_path( __FILE__ ) );
 define( 'CFS_URL', plugin_dir_url( __FILE__ ) );
