@@ -1,0 +1,333 @@
+/*
+Theme Name: Sakura Clinic
+Theme URI: https://demo-clinic.hatchdogs.net/
+Description: 交通事故・自賠責に対応する整骨院向けのランディングページテーマ。料金シミュレーター（別プラグイン）と組み合わせて使う。架空クライアント向けのサンプル作品。
+Version: 2.0.0
+Requires at least: 6.0
+Requires PHP: 8.0
+License: GPL-2.0-or-later
+License URI: https://www.gnu.org/licenses/gpl-2.0.html
+Text Domain: sakura-clinic
+Tags: landing-page, one-column, custom-colors, responsive-layout
+*/
+
+/* ============================================================
+   1. トークン — 淡色を地にし、緑は差し色に留める
+   ============================================================ */
+:root {
+  --paper: #faf8f4;
+  --paper-2: #f2ede4;
+  --white: #fff;
+  --green: #2d6a4f;
+  --green-mid: #52796f;
+  --green-soft: #e7efe9;
+  --ink: #33322e;
+  --muted: #7d7a72;
+  --line: #e2ddd2;
+  --accent: #c9713f;
+  --radius: 14px;
+  --shadow: 0 1px 3px rgba(51,50,46,.06), 0 8px 24px rgba(51,50,46,.05);
+}
+
+/* ============================================================
+   2. リセット / ベース
+   ============================================================ */
+*, *::before, *::after { box-sizing: border-box; }
+body, h1, h2, h3, p, figure, ul, ol, dl, dd, dt { margin: 0; padding: 0; }
+ul, ol { list-style: none; }
+img, svg { max-width: 100%; height: auto; display: block; }
+a { color: inherit; }
+
+body {
+  font-family: "Noto Sans JP", system-ui, -apple-system, "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
+  color: var(--ink);
+  background: var(--paper);
+  line-height: 1.9;
+  font-size: 15px;
+  letter-spacing: .02em;
+  -webkit-font-smoothing: antialiased;
+}
+
+.screen-reader-text {
+  position: absolute !important;
+  width: 1px; height: 1px;
+  overflow: hidden; clip: rect(1px, 1px, 1px, 1px);
+  white-space: nowrap;
+}
+.skip-link:focus {
+  position: fixed; top: 8px; left: 8px; z-index: 200;
+  width: auto; height: auto; clip: auto;
+  padding: 10px 16px; background: var(--white); color: var(--green);
+}
+:focus-visible { outline: 2px solid var(--green); outline-offset: 3px; }
+
+/* ============================================================
+   3. レイアウト部品
+   ============================================================ */
+.container { width: 100%; margin-inline: auto; padding-inline: 24px; }
+.container--sm { max-width: 700px; }
+.container--md { max-width: 920px; }
+.container--lg { max-width: 1120px; }
+
+.section { padding-block: 72px; }
+.section--paper2 { background: var(--paper-2); }
+.section--white  { background: var(--white); }
+.section--soft   { background: var(--green-soft); }
+
+.section__head { text-align: center; margin-bottom: 44px; }
+.eyebrow {
+  font-size: .6875rem; letter-spacing: .3em; color: var(--green-mid);
+  display: block; margin-bottom: 10px;
+}
+.section__title {
+  font-size: clamp(1.375rem, 3.4vw, 1.75rem);
+  font-weight: 700; line-height: 1.6;
+}
+.section__title .mark {
+  background: linear-gradient(transparent 68%, var(--green-soft) 68%);
+}
+.section__lead { font-size: .875rem; color: var(--muted); margin-top: 12px; }
+
+/* 罫線の見出し装飾（濃い塗りを使わずに区切りを作る） */
+.rule {
+  width: 32px; height: 2px; background: var(--green);
+  margin: 18px auto 0; border-radius: 2px;
+}
+
+/* ============================================================
+   4. ボタン
+   ============================================================ */
+.btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 15px 30px; border: 0; border-radius: 999px;
+  font-size: .9375rem; font-weight: 700; letter-spacing: .06em;
+  text-decoration: none; cursor: pointer;
+  transition: background .25s, color .25s, box-shadow .25s, transform .25s;
+}
+.btn--primary { background: var(--green); color: var(--white); box-shadow: 0 6px 16px rgba(45,106,79,.22); }
+.btn--primary:hover, .btn--primary:focus { background: #245840; transform: translateY(-1px); }
+.btn--outline { background: var(--white); color: var(--green); box-shadow: inset 0 0 0 1.5px var(--green); }
+.btn--outline:hover, .btn--outline:focus { background: var(--green-soft); }
+.btn--sm { padding: 10px 20px; font-size: .8125rem; }
+.btn__icon { width: 18px; height: 18px; flex: none; }
+
+/* ============================================================
+   5. ヘッダー
+   ============================================================ */
+.site-header {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(250,248,244,.92);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--line);
+}
+.site-header__inner {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 16px; padding-block: 14px;
+}
+.site-header__brand { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+.site-header__mark { width: 30px; height: 30px; color: var(--green); flex: none; }
+.site-header__name { font-size: 1.0625rem; font-weight: 700; letter-spacing: .08em; line-height: 1.3; }
+.site-header__sub { display: block; font-size: .625rem; color: var(--muted); letter-spacing: .18em; font-weight: 400; }
+.site-header__tel { display: none; font-weight: 700; color: var(--green); text-decoration: none; letter-spacing: .04em; }
+
+/* ============================================================
+   6. ヒーロー — 淡色の地に線画。濃い塗りは使わない
+   ============================================================ */
+.hero { position: relative; overflow: hidden; background: var(--paper); }
+.hero::after {
+  content: ""; position: absolute; inset: auto 0 0 0; height: 1px; background: var(--line);
+}
+.hero__inner {
+  display: grid; gap: 32px; align-items: center;
+  padding-block: 56px 64px;
+}
+.hero__badge {
+  display: inline-block; font-size: .75rem; font-weight: 700;
+  color: var(--green); background: var(--green-soft);
+  padding: 6px 14px; border-radius: 999px; margin-bottom: 20px;
+}
+.hero__title {
+  font-size: clamp(1.625rem, 5.4vw, 2.5rem);
+  font-weight: 700; line-height: 1.55; margin-bottom: 20px;
+}
+.hero__title .mark { background: linear-gradient(transparent 66%, #f6e3ce 66%); }
+.hero__lead { color: var(--muted); font-size: .9375rem; margin-bottom: 28px; }
+.hero__actions { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 22px; }
+.hero__facts { display: flex; flex-wrap: wrap; gap: 8px 20px; font-size: .8125rem; color: var(--muted); }
+.hero__fact { display: flex; align-items: center; gap: 6px; }
+.hero__fact svg { width: 16px; height: 16px; color: var(--green-mid); flex: none; }
+.hero__art { justify-self: center; width: min(100%, 420px); color: var(--green-mid); }
+
+/* ============================================================
+   7. お悩み
+   ============================================================ */
+.worries { display: grid; gap: 12px; }
+.worry {
+  display: flex; align-items: flex-start; gap: 12px;
+  background: var(--white); border: 1px solid var(--line);
+  border-radius: var(--radius); padding: 18px 20px; font-size: .9375rem;
+}
+.worry svg { width: 20px; height: 20px; color: var(--accent); flex: none; margin-top: 5px; }
+
+/* ============================================================
+   8. 特徴カード
+   ============================================================ */
+.features { display: grid; gap: 16px; grid-template-columns: repeat(2, 1fr); }
+.feature {
+  background: var(--white); border: 1px solid var(--line);
+  border-radius: var(--radius); padding: 26px 18px; text-align: center;
+  box-shadow: var(--shadow);
+}
+.feature__icon { width: 40px; height: 40px; margin: 0 auto 14px; color: var(--green); }
+.feature__title { font-size: .9375rem; font-weight: 700; margin-bottom: 6px; }
+.feature__text { font-size: .8125rem; color: var(--muted); line-height: 1.8; }
+
+/* ============================================================
+   9. 施術の流れ
+   ============================================================ */
+.flow { display: grid; gap: 0; counter-reset: step; }
+.flow__item {
+  position: relative; padding: 0 0 32px 56px; counter-increment: step;
+}
+.flow__item::before {
+  content: counter(step, decimal-leading-zero);
+  position: absolute; left: 0; top: 0;
+  width: 38px; height: 38px; border-radius: 50%;
+  background: var(--green-soft); color: var(--green);
+  display: grid; place-items: center;
+  font-size: .8125rem; font-weight: 700; letter-spacing: .04em;
+}
+.flow__item:not(:last-child)::after {
+  content: ""; position: absolute; left: 19px; top: 44px; bottom: 8px;
+  width: 1px; background: var(--line);
+}
+.flow__title { font-weight: 700; margin-bottom: 4px; }
+.flow__text { font-size: .8438rem; color: var(--muted); }
+
+/* ============================================================
+   10. よくある質問
+   ============================================================ */
+.faq { display: grid; gap: 10px; }
+.faq__item {
+  background: var(--white); border: 1px solid var(--line);
+  border-radius: var(--radius); overflow: hidden;
+}
+.faq__q {
+  display: flex; gap: 12px; align-items: flex-start;
+  padding: 18px 20px; font-weight: 700; font-size: .9375rem;
+  cursor: pointer; list-style: none;
+}
+.faq__q::-webkit-details-marker { display: none; }
+.faq__q::before {
+  content: "Q"; color: var(--green); font-weight: 700; flex: none;
+}
+.faq__q::after {
+  content: ""; margin-left: auto; flex: none;
+  width: 9px; height: 9px; margin-top: 8px;
+  border-right: 1.5px solid var(--muted); border-bottom: 1.5px solid var(--muted);
+  transform: rotate(45deg); transition: transform .25s;
+}
+.faq__item[open] .faq__q::after { transform: rotate(-135deg); }
+.faq__a {
+  display: flex; gap: 12px; padding: 0 20px 20px;
+  font-size: .875rem; color: var(--muted);
+}
+.faq__a::before { content: "A"; color: var(--accent); font-weight: 700; flex: none; }
+
+/* ============================================================
+   11. アクセス
+   ============================================================ */
+.access { display: grid; gap: 24px; }
+.access__list { display: grid; gap: 0; font-size: .875rem; }
+.access__row { display: grid; grid-template-columns: 6.5em 1fr; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--line); }
+.access__key { color: var(--muted); font-size: .8125rem; }
+.access__art { color: var(--green-mid); background: var(--white); border: 1px solid var(--line); border-radius: var(--radius); padding: 24px; }
+
+/* ============================================================
+   12. 最終CTA / フッター
+   ============================================================ */
+.cta { text-align: center; }
+.cta__title { font-size: clamp(1.25rem, 3.4vw, 1.625rem); font-weight: 700; margin-bottom: 12px; }
+.cta__lead { font-size: .875rem; color: var(--muted); margin-bottom: 28px; }
+.cta__tel {
+  display: inline-flex; align-items: center; gap: 10px;
+  font-size: clamp(1.5rem, 5vw, 2rem); font-weight: 700;
+  color: var(--green); text-decoration: none; letter-spacing: .04em;
+}
+.cta__tel svg { width: 26px; height: 26px; flex: none; }
+.cta__hours { font-size: .8125rem; color: var(--muted); margin-top: 10px; }
+
+.sample-notice {
+  background: var(--paper-2); color: var(--muted);
+  border-top: 1px solid var(--line);
+  text-align: center; font-size: .75rem;
+  padding: 14px 24px; line-height: 1.8;
+}
+.site-footer {
+  background: var(--paper-2); color: var(--muted);
+  text-align: center; font-size: .75rem; padding-block: 22px 30px;
+}
+
+/* ============================================================
+   13. 汎用ページ
+   ============================================================ */
+.page-body { padding-block: 56px 72px; }
+.page-body h1 { font-size: 1.5rem; margin-bottom: 20px; }
+.page-body p { margin-bottom: 14px; }
+
+/* ============================================================
+   14. レスポンシブ
+   ============================================================ */
+@media (min-width: 768px) {
+  body { font-size: 16px; }
+  .section { padding-block: 96px; }
+  .site-header__tel { display: inline-block; }
+  .hero__inner { grid-template-columns: 1.05fr .95fr; padding-block: 72px 88px; }
+  .hero__art { justify-self: end; }
+  .features { grid-template-columns: repeat(4, 1fr); }
+  .worries { grid-template-columns: repeat(2, 1fr); }
+  .access { grid-template-columns: 1fr 1fr; align-items: start; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; animation: none !important; }
+}
+
+/* ============================================================
+   15. ヒーロー写真（カスタマイザーで画像を設定した場合）
+   ============================================================ */
+.hero__photo {
+  width: 100%; border-radius: var(--radius);
+  box-shadow: 0 2px 6px rgba(51,50,46,.08), 0 18px 40px rgba(51,50,46,.10);
+  object-fit: cover; aspect-ratio: 4 / 3;
+}
+.hero__art { position: relative; }
+.hero__art::before {
+  content: ""; position: absolute; inset: auto -14px -14px auto;
+  width: 62%; height: 62%; border-radius: var(--radius);
+  background: var(--green-soft); z-index: -1;
+}
+
+/* ============================================================
+   16. アクセスの略図
+   ============================================================ */
+.access__map { background: var(--white); border: 1px solid var(--line); border-radius: var(--radius); padding: 20px; }
+.access__map svg { width: 100%; height: auto; }
+.access__caption { font-size: .75rem; color: var(--muted); margin-top: 10px; text-align: center; }
+
+/* 画像クレジット */
+.credit { font-size: .6875rem; color: var(--muted); margin-top: 4px; }
+
+/* ============================================================
+   17. CTA 内のフォーム
+   ============================================================ */
+.cta__form {
+	margin-top: 44px;
+	padding-top: 36px;
+	border-top: 1px solid var(--line);
+}
+.cta__form-lead {
+	font-size: .8125rem;
+	color: var(--muted);
+	margin-bottom: 22px;
+}

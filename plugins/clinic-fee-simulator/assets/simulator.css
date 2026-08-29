@@ -1,0 +1,148 @@
+/*
+ * 料金シミュレーター
+ * テーマ側の CSS カスタムプロパティがあればそれを使い、無ければ自前の既定値で動く。
+ */
+.cfs {
+	--cfs-green: var(--green, #2d6a4f);
+	--cfs-soft: var(--green-soft, #e7efe9);
+	--cfs-line: var(--line, #e2ddd2);
+	--cfs-muted: var(--muted, #7d7a72);
+	--cfs-white: var(--white, #fff);
+	--cfs-radius: var(--radius, 14px);
+	display: grid;
+	gap: 20px;
+}
+
+.cfs__group {
+	background: var(--cfs-white);
+	border: 1px solid var(--cfs-line);
+	border-radius: var(--cfs-radius);
+	padding: 20px;
+	margin: 0 0 12px;
+}
+
+.cfs__legend {
+	font-size: .8125rem;
+	font-weight: 700;
+	letter-spacing: .04em;
+	padding: 0 0 12px;
+}
+
+.cfs__chips {
+	display: grid;
+	grid-template-columns: repeat(2, 1fr);
+	gap: 8px;
+}
+.cfs__chips--3 { grid-template-columns: repeat(3, 1fr); }
+
+.cfs__chip { position: relative; display: block; }
+.cfs__chip input {
+	position: absolute;
+	opacity: 0;
+	width: 1px;
+	height: 1px;
+}
+.cfs__chip span {
+	display: block;
+	text-align: center;
+	padding: 11px 8px;
+	font-size: .8125rem;
+	border: 1px solid var(--cfs-line);
+	border-radius: 8px;
+	background: var(--cfs-white);
+	cursor: pointer;
+	transition: border-color .2s, background .2s, color .2s;
+}
+.cfs__chip input:checked + span {
+	border-color: var(--cfs-green);
+	background: var(--cfs-soft);
+	color: var(--cfs-green);
+	font-weight: 700;
+}
+.cfs__chip input:focus-visible + span {
+	outline: 2px solid var(--cfs-green);
+	outline-offset: 2px;
+}
+
+.cfs__result {
+	background: var(--cfs-white);
+	border: 1px solid var(--cfs-green);
+	border-radius: var(--cfs-radius);
+	padding: 24px 20px;
+	transition: opacity .2s;
+}
+.cfs.is-loading .cfs__result { opacity: .55; }
+
+.cfs__result-title {
+	text-align: center;
+	font-size: .75rem;
+	letter-spacing: .2em;
+	color: var(--cfs-green);
+	margin: 0 0 18px;
+}
+
+.cfs__figures {
+	display: grid;
+	gap: 10px;
+	margin-bottom: 16px;
+}
+
+.cfs__figure {
+	display: flex;
+	align-items: baseline;
+	justify-content: space-between;
+	gap: 12px;
+	padding: 10px 14px;
+	border-radius: 8px;
+	background: #faf8f4;
+}
+.cfs__figure--main {
+	background: var(--cfs-soft);
+	padding: 14px;
+}
+
+.cfs__figure-key { font-size: .8125rem; color: var(--cfs-muted); }
+.cfs__figure-val {
+	font-size: 1.25rem;
+	font-weight: 700;
+	font-variant-numeric: tabular-nums;
+	color: var(--cfs-green);
+}
+.cfs__figure--main .cfs__figure-val { font-size: 1.625rem; }
+
+.cfs__note {
+	font-size: .8125rem;
+	color: var(--cfs-muted);
+	margin: 0 0 10px;
+	line-height: 1.8;
+}
+.cfs__disclaimer {
+	font-size: .6875rem;
+	color: var(--cfs-muted);
+	line-height: 1.8;
+	margin: 0;
+	padding-top: 10px;
+	border-top: 1px dashed var(--cfs-line);
+}
+
+.cfs__submit {
+	display: block;
+	width: 100%;
+	padding: 12px;
+	margin-top: 10px;
+	border: 0;
+	border-radius: 999px;
+	background: var(--cfs-green);
+	color: #fff;
+	font-weight: 700;
+	cursor: pointer;
+}
+
+@media (min-width: 600px) {
+	.cfs__figures { grid-template-columns: 1fr 1fr; }
+	.cfs__figure--main { grid-column: 1 / -1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.cfs *, .cfs { transition: none !important; }
+}

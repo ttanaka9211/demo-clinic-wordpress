@@ -1,0 +1,22 @@
+# 既定ですべて追跡しない。自作したテーマとプラグインだけを対象にする。
+# WordPress 本体・languages・uploads・upgrade はここでは管理しない。
+/*
+!.gitignore
+!README.md
+!themes/
+themes/*
+!themes/sakura-clinic/
+!plugins/
+plugins/*
+!plugins/clinic-fee-simulator/
+!plugins/clinic-contact/
+
+# 編集時の控えファイルは絶対に入れない。
+# `wp-config.php.bak.xxxx` が nginx から平文で配信された事故があったため
+# （2026-08-29 に検知・遮断済み）。
+*.bak
+*.bak.*
+*~
+*.orig
+*.save
+*.swp
