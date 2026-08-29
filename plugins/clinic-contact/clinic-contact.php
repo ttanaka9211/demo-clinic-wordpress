@@ -3,7 +3,7 @@
  * Plugin Name:       Clinic Contact
  * Plugin URI:        https://demo-clinic.hatchdogs.net/
  * Description:       問い合わせフォーム。ショートコード [clinic_contact] で設置します。送信は SMTP 経由（SPF/DKIM/DMARC を通すため PHP の mail() 直送は使いません）。
- * Version:           1.0.0
+ * Version:           1.1.0
  * Requires at least: 6.0
  * Requires PHP:      8.0
  * Author:            hatchdogs
@@ -18,7 +18,7 @@ declare( strict_types = 1 );
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'CC_VERSION', '1.0.0' );
+define( 'CC_VERSION', '1.1.0' );
 define( 'CC_FILE', __FILE__ );
 define( 'CC_DIR', plugin_dir_path( __FILE__ ) );
 define( 'CC_URL', plugin_dir_url( __FILE__ ) );

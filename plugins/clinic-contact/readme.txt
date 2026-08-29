@@ -4,7 +4,7 @@ Tags: shortcode, contact form, smtp
 Requires at least: 6.0
 Tested up to: 7.1
 Requires PHP: 8.0
-Stable tag: 1.0.0
+Stable tag: 1.1.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -26,8 +26,14 @@ License URI: https://www.gnu.org/licenses/gpl-2.0.html
 * **SMTP AUTH のログイン ID と差出人アドレスは別物**：メールサーバーによってはログイン ID が
   ローカル部だけ（例 `info`）で、差出人は SPF / DKIM を通すために完全なアドレスが必要です。
   そのため `CLINIC_SMTP_USER` と `CLINIC_SMTP_FROM` を分けています。
-* **スパム対策は3段**：nonce（CSRF）、ハニーポット（`cc_website` に入力があれば破棄）、
-  時間トラップ（フォーム描画から送信までが 3 秒未満なら破棄）。CAPTCHA は使っていません。
+* **スパム対策は4段**：nonce（CSRF）、ハニーポット（`cc_website` に入力があれば破棄）、
+  時間トラップ（フォーム描画から送信までが 3 秒未満、または `cc_started` が無ければ破棄）、
+  レート制限（同一の送信元から 10 分あたり 3 通まで）。CAPTCHA は使っていません。
+  前の3つは素朴な機械を落とすだけで回数を縛れません。nonce は使い捨てではなく
+  十数時間有効なので、ページを1回取得できれば何度でも投稿できてしまいます。
+  回数の歯止めはレート制限が持ちます。
+* **検証で弾いても入力は消えません**：リダイレクトせず同一 URL で結果を出し、
+  入力をフォームへ書き戻します。
 * **送信先ページを固定しない**：`action` を空にして現在の URL へ POST します。
   `get_permalink()` はフロントページが投稿一覧のときループ内の投稿 URL を返すため、
   それを使うと別のページへ飛びます。
@@ -56,12 +62,24 @@ License URI: https://www.gnu.org/licenses/gpl-2.0.html
 `wp-config.php` の SMTP 定数が揃っているか確認してください。ひとつでも欠けていると、
 このプラグインは `mail()` に落とさず送信を拒否します。理由は PHP のエラーログに出ます。
 
+= 「短時間に続けて送信されています」と出ます =
+
+レート制限です。同一の送信元から 10 分あたり 3 通までにしています。
+オフィスや携帯回線のように送信元が共有される環境では、別の人の送信と合算されます。
+回数を変える場合は `CC_Form::RL_MAX` と `RL_WINDOW` を調整してください。
+
 = 届くけれど迷惑メールに入ります =
 
 送信元ドメインの SPF / DKIM / DMARC を確認してください。`CLINIC_SMTP_FROM` は
 SPF に含まれるドメインのアドレスである必要があります。
 
 == Changelog ==
+
+= 1.1.0 =
+* 検証で弾いたときに入力をフォームへ戻すようにした。
+* 送信元ごとのレート制限を追加。
+* cc_started が無い送信を弾くようにした（時間トラップの抜け道）。
+* お名前と電話番号の長さをサーバ側でも検証。
 
 = 1.0.0 =
 * 初回リリース。
