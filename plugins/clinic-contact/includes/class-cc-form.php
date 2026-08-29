@@ -18,6 +18,10 @@ final class CC_Form {
 	private const HONEY   = 'cc_website';
 	private const MIN_SEC = 3;
 
+	/** 同一の送信元から、この回数までを RL_WINDOW 秒あたりで許す。 */
+	private const RL_MAX    = 3;
+	private const RL_WINDOW = 600;
+
 	/**
 	 * 画面に出すメッセージ。
 	 *
@@ -115,12 +119,63 @@ final class CC_Form {
 			return;
 		}
 
+		// 送信の直前に見る。書き直しのたびに枠を消費させないため、
+		// 検証エラーでは数えない。
+		if ( self::is_rate_limited() ) {
+			self::$notice = array(
+				'type' => 'error',
+				'text' => __( '短時間に続けて送信されています。しばらく時間をおいてからお試しください。お急ぎの場合はお電話でご連絡ください。', 'clinic-contact' ),
+			);
+			return;
+		}
+		self::count_attempt();
+
 		self::$notice = self::send( $name, $email, $tel, $message );
 
 		// 送れたら控えを捨てる。残すと同じ内容を二重送信させてしまう。
 		if ( 'ok' === self::$notice['type'] ) {
 			self::$input = array( 'name' => '', 'email' => '', 'tel' => '', 'message' => '' );
 		}
+	}
+
+	/**
+	 * 送信元ごとの計数キー。
+	 *
+	 * REMOTE_ADDR をそのまま使う。このサイトはリバースプロキシや CDN の
+	 * 内側にいないため、これが実際の接続元になる。
+	 * 将来その前段を挟むなら X-Forwarded-For を見る必要があるが、
+	 * 検証せずに信じると誰でも偽装できるので、そのときは信頼できる
+	 * プロキシの範囲を決めたうえで扱うこと。
+	 */
+	private static function rate_key(): string {
+		$ip = isset( $_SERVER['REMOTE_ADDR'] ) ? (string) $_SERVER['REMOTE_ADDR'] : 'unknown';
+
+		return 'cc_rl_' . md5( $ip );
+	}
+
+	/**
+	 * 送信が多すぎないか。
+	 *
+	 * nonce は使い捨てではなく十数時間有効なので、1回取得できれば
+	 * 時間トラップを越えたあと何度でも投稿できてしまう。
+	 * ハニーポットと時間トラップは素朴な機械を落とすだけで、回数は縛れない。
+	 * 実在の SMTP アカウントで送っている以上、踏み台にされると
+	 * ドメインの評判に響くため、回数そのものを制限する。
+	 */
+	private static function is_rate_limited(): bool {
+		return (int) get_transient( self::rate_key() ) >= self::RL_MAX;
+	}
+
+	/**
+	 * 送信の試行を数える。
+	 *
+	 * set_transient は既存キーに書くと期限も引き直すため、送り続けている間は
+	 * 枠が空かない。正規の利用者は 10 分に 3 通も送らないので、
+	 * 厳しすぎるより漏らさないほうを選んでいる。
+	 */
+	private static function count_attempt(): void {
+		$key = self::rate_key();
+		set_transient( $key, (int) get_transient( $key ) + 1, self::RL_WINDOW );
 	}
 
 	/**
