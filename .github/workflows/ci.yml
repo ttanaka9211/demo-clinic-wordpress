@@ -40,6 +40,8 @@ jobs:
       # 依存は開発用の数個だけ。第三者のラッパーを挟むより、
       # composer install を直接呼ぶほうが見通しがよく、
       # そのラッパーが内部で使う action の版まで面倒を見なくて済む。
+      # ロックは composer.json の config.platform.php = 8.0 で解決してあるので、
+      # 8.0 から 8.4 まで同じロックのまま入る。
       - name: 依存の取得
         run: composer install --no-interaction --no-progress --prefer-dist
       - name: phpcs
@@ -62,6 +64,6 @@ jobs:
           php-version: ${{ matrix.php }}
           coverage: none
       - name: 依存の取得
-        run: composer install --no-interaction --no-progress --prefer-dist --ignore-platform-req=php+
+        run: composer install --no-interaction --no-progress --prefer-dist
       - name: phpunit
         run: vendor/bin/phpunit --colors=never

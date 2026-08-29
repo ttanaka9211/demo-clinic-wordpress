@@ -1,27 +1,30 @@
 {
-	"name": "hatchdogs/demo-clinic-wordpress",
-	"description": "さくら整骨院（架空クライアント）向けの WordPress テーマと自作プラグイン",
-	"type": "project",
-	"license": "GPL-2.0-or-later",
-	"require": {
-		"php": ">=8.0"
-	},
-	"require-dev": {
-		"squizlabs/php_codesniffer": "^3.9",
-		"wp-coding-standards/wpcs": "^3.1",
-		"phpcompatibility/phpcompatibility-wp": "^2.1",
-		"dealerdirect/phpcodesniffer-composer-installer": "^1.0",
-		"phpunit/phpunit": "^9.6"
-	},
-	"config": {
-		"allow-plugins": {
-			"dealerdirect/phpcodesniffer-composer-installer": true
-		}
-	},
-	"scripts": {
-		"lint": "find themes plugins -name '*.php' -print0 | xargs -0 -n1 php -l",
-		"cs": "phpcs",
-		"cbf": "phpcbf",
-		"test": "phpunit"
-	}
+    "name": "hatchdogs/demo-clinic-wordpress",
+    "description": "さくら整骨院（架空クライアント）向けの WordPress テーマと自作プラグイン",
+    "type": "project",
+    "license": "GPL-2.0-or-later",
+    "require": {
+        "php": ">=8.0"
+    },
+    "require-dev": {
+        "squizlabs/php_codesniffer": "^3.9",
+        "wp-coding-standards/wpcs": "^3.1",
+        "phpcompatibility/phpcompatibility-wp": "^2.1",
+        "dealerdirect/phpcodesniffer-composer-installer": "^1.0",
+        "phpunit/phpunit": "^9.6"
+    },
+    "config": {
+        "platform": {
+            "php": "8.0"
+        },
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true
+        }
+    },
+    "scripts": {
+        "lint": "find themes plugins -name '*.php' -print0 | xargs -0 -n1 php -l",
+        "cs": "phpcs",
+        "cbf": "phpcbf",
+        "test": "phpunit"
+    }
 }
