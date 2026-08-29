@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-08-29T04:06:10+00:00\n"
+"POT-Creation-Date: 2026-08-29T04:33:52+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: clinic-fee-simulator\n"
@@ -34,149 +34,155 @@ msgstr ""
 msgid "hatchdogs"
 msgstr ""
 
-#: includes/class-cfs-calculator.php:29
+#: includes/class-clinic-fee-simulator-calculator.php:29
 msgid "首の痛み"
 msgstr ""
 
-#: includes/class-cfs-calculator.php:30
+#: includes/class-clinic-fee-simulator-calculator.php:30
 msgid "腰の痛み"
 msgstr ""
 
-#: includes/class-cfs-calculator.php:31
+#: includes/class-clinic-fee-simulator-calculator.php:31
 msgid "肩のこり"
 msgstr ""
 
-#: includes/class-cfs-calculator.php:32
+#: includes/class-clinic-fee-simulator-calculator.php:32
 msgid "頭の重さ"
 msgstr ""
 
-#: includes/class-cfs-calculator.php:33
+#: includes/class-clinic-fee-simulator-calculator.php:33
 msgid "手足のしびれ"
 msgstr ""
 
-#: includes/class-cfs-calculator.php:44
+#: includes/class-clinic-fee-simulator-calculator.php:44
 msgid "自賠責保険"
 msgstr ""
 
-#: includes/class-cfs-calculator.php:45
+#: includes/class-clinic-fee-simulator-calculator.php:45
 msgid "健康保険"
 msgstr ""
 
-#: includes/class-cfs-calculator.php:46
+#: includes/class-clinic-fee-simulator-calculator.php:46
 msgid "自費"
 msgstr ""
 
-#: includes/class-cfs-calculator.php:57
+#: includes/class-clinic-fee-simulator-calculator.php:57
 msgid "週1回"
 msgstr ""
 
-#: includes/class-cfs-calculator.php:58
+#: includes/class-clinic-fee-simulator-calculator.php:58
 msgid "週2回"
 msgstr ""
 
-#: includes/class-cfs-calculator.php:59
+#: includes/class-clinic-fee-simulator-calculator.php:59
 msgid "週3回"
 msgstr ""
 
-#: includes/class-cfs-calculator.php:119
+#: includes/class-clinic-fee-simulator-calculator.php:127
 msgid "自賠責保険が適用される場合、窓口でのお支払いは生じないのが一般的です。適用の可否は保険会社の判断によります。"
 msgstr ""
 
-#. translators: %d: 自己負担割合
-#: includes/class-cfs-calculator.php:127
+#. translators: %d: 自己負担の割合（割）
+#: includes/class-clinic-fee-simulator-calculator.php:143
 #, php-format
 msgid "健康保険が適用される場合の目安です（自己負担 %d 割で計算）。"
 msgstr ""
 
-#: includes/class-cfs-calculator.php:134
+#. translators: %d: 自己負担の割合（％）
+#: includes/class-clinic-fee-simulator-calculator.php:148
+#, php-format
+msgid "健康保険が適用される場合の目安です（自己負担 %d％ で計算）。"
+msgstr ""
+
+#: includes/class-clinic-fee-simulator-calculator.php:155
 msgid "保険を使わない場合の目安です。"
 msgstr ""
 
-#: includes/class-cfs-settings.php:45
+#: includes/class-clinic-fee-simulator-settings.php:45
 msgid "1回あたりの基本施術料（円）"
 msgstr ""
 
-#: includes/class-cfs-settings.php:51
+#: includes/class-clinic-fee-simulator-settings.php:51
 msgid "症状が多い場合の加算（円）"
 msgstr ""
 
-#: includes/class-cfs-settings.php:57
+#: includes/class-clinic-fee-simulator-settings.php:57
 msgid "加算の対象となる症状の数"
 msgstr ""
 
-#: includes/class-cfs-settings.php:63
+#: includes/class-clinic-fee-simulator-settings.php:63
 msgid "月あたりの週数"
 msgstr ""
 
-#: includes/class-cfs-settings.php:69
+#: includes/class-clinic-fee-simulator-settings.php:69
 msgid "健康保険の自己負担割合（％）"
 msgstr ""
 
-#: includes/class-cfs-settings.php:75
+#: includes/class-clinic-fee-simulator-settings.php:75
 msgid "注記"
 msgstr ""
 
-#: includes/class-cfs-settings.php:107
-#: includes/class-cfs-settings.php:108
+#: includes/class-clinic-fee-simulator-settings.php:107
+#: includes/class-clinic-fee-simulator-settings.php:108
 msgid "料金シミュレーター"
 msgstr ""
 
-#: includes/class-cfs-settings.php:131
+#: includes/class-clinic-fee-simulator-settings.php:131
 msgid "料金表"
 msgstr ""
 
-#: includes/class-cfs-settings.php:133
+#: includes/class-clinic-fee-simulator-settings.php:133
 msgid "ここを変更すると、サイト上のシミュレーターにそのまま反映されます。"
 msgstr ""
 
 #. translators: %s: 項目名
-#: includes/class-cfs-settings.php:189
+#: includes/class-clinic-fee-simulator-settings.php:189
 #, php-format
 msgid "「%s」は半角数字で入力してください。この項目は変更していません。"
 msgstr ""
 
 #. translators: 1: 項目名, 2: 最小値, 3: 最大値
-#: includes/class-cfs-settings.php:204
+#: includes/class-clinic-fee-simulator-settings.php:204
 #, php-format
 msgid "「%1$s」は %2$s〜%3$s の範囲で入力してください。この項目は変更していません。"
 msgstr ""
 
-#: includes/class-cfs-settings.php:259
+#: includes/class-clinic-fee-simulator-settings.php:259
 msgid "このページを表示する権限がありません。"
 msgstr ""
 
-#: includes/class-cfs-settings.php:265
+#: includes/class-clinic-fee-simulator-settings.php:265
 msgid "設置するには、固定ページや投稿に次のショートコードを書きます。"
 msgstr ""
 
-#: includes/class-cfs-shortcode.php:62
+#: includes/class-clinic-fee-simulator-shortcode.php:65
 msgid "STEP 1　気になる症状（複数選択できます）"
 msgstr ""
 
-#: includes/class-cfs-shortcode.php:74
+#: includes/class-clinic-fee-simulator-shortcode.php:77
 msgid "STEP 2　保険の種類"
 msgstr ""
 
-#: includes/class-cfs-shortcode.php:86
+#: includes/class-clinic-fee-simulator-shortcode.php:89
 msgid "STEP 3　通院の頻度"
 msgstr ""
 
-#: includes/class-cfs-shortcode.php:98
+#: includes/class-clinic-fee-simulator-shortcode.php:101
 msgid "計算する"
 msgstr ""
 
-#: includes/class-cfs-shortcode.php:103
+#: includes/class-clinic-fee-simulator-shortcode.php:106
 msgid "費用の目安"
 msgstr ""
 
-#: includes/class-cfs-shortcode.php:106
+#: includes/class-clinic-fee-simulator-shortcode.php:109
 msgid "1回あたり"
 msgstr ""
 
-#: includes/class-cfs-shortcode.php:110
+#: includes/class-clinic-fee-simulator-shortcode.php:113
 msgid "1か月の施術料"
 msgstr ""
 
-#: includes/class-cfs-shortcode.php:114
+#: includes/class-clinic-fee-simulator-shortcode.php:117
 msgid "お支払いの目安"
 msgstr ""

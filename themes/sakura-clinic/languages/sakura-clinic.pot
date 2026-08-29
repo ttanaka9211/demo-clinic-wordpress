@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-08-29T03:45:22+00:00\n"
+"POT-Creation-Date: 2026-08-29T04:33:53+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: sakura-clinic\n"
@@ -49,189 +49,189 @@ msgstr ""
 msgid "仕事帰りに通える時間帯がない"
 msgstr ""
 
-#: front-page.php:28
+#: front-page.php:30
 msgid "交通事故に対応"
 msgstr ""
 
-#: front-page.php:28
+#: front-page.php:31
 msgid "自賠責保険を使った施術を承っています。"
 msgstr ""
 
-#: front-page.php:29
+#: front-page.php:35
 msgid "書類のご相談"
 msgstr ""
 
-#: front-page.php:29
+#: front-page.php:36
 msgid "保険会社への連絡や必要書類をご案内します。"
 msgstr ""
 
-#: front-page.php:30
-#: front-page.php:69
+#: front-page.php:40
+#: front-page.php:109
 msgid "夜20時まで受付"
 msgstr ""
 
-#: front-page.php:30
+#: front-page.php:41
 msgid "平日はお仕事帰りの時間にも通えます。"
 msgstr ""
 
-#: front-page.php:31
-#: front-page.php:70
+#: front-page.php:45
+#: front-page.php:110
 msgid "駅から徒歩5分"
 msgstr ""
 
-#: front-page.php:31
+#: front-page.php:46
 msgid "提携駐車場もご利用いただけます。"
 msgstr ""
 
-#: front-page.php:35
+#: front-page.php:52
 msgid "お電話でご予約"
 msgstr ""
 
-#: front-page.php:35
+#: front-page.php:53
 msgid "事故の状況と、いまお困りの症状をお聞かせください。"
 msgstr ""
 
-#: front-page.php:36
+#: front-page.php:56
 msgid "問診・お身体の確認"
 msgstr ""
 
-#: front-page.php:36
+#: front-page.php:57
 msgid "痛みの出かたや動かせる範囲を確認します。"
 msgstr ""
 
-#: front-page.php:37
+#: front-page.php:60
 msgid "施術の内容をご説明"
 msgstr ""
 
-#: front-page.php:37
+#: front-page.php:61
 msgid "通院の目安と進め方をお伝えしてから始めます。"
 msgstr ""
 
-#: front-page.php:38
+#: front-page.php:64
 msgid "施術・次回のご案内"
 msgstr ""
 
-#: front-page.php:38
+#: front-page.php:65
 msgid "ご都合に合わせて次回の予定を決めます。"
 msgstr ""
 
-#: front-page.php:42
+#: front-page.php:71
 msgid "費用はどのくらいかかりますか。"
 msgstr ""
 
-#: front-page.php:42
+#: front-page.php:72
 msgid "保険の種類と通院の頻度によって変わります。上の料金シミュレーターで目安をご確認いただけます。"
 msgstr ""
 
-#: front-page.php:43
+#: front-page.php:75
 msgid "病院に通いながらでも大丈夫ですか。"
 msgstr ""
 
-#: front-page.php:43
+#: front-page.php:76
 msgid "併用されている方もいらっしゃいます。通院状況をお聞かせいただければ、進め方をご相談します。"
 msgstr ""
 
-#: front-page.php:44
+#: front-page.php:79
 msgid "保険会社への連絡は自分でしますか。"
 msgstr ""
 
-#: front-page.php:44
+#: front-page.php:80
 msgid "ご自身でご連絡いただく形が基本ですが、伝え方が分からない場合はご案内しています。"
 msgstr ""
 
-#: front-page.php:45
+#: front-page.php:83
 msgid "予約なしでも受けられますか。"
 msgstr ""
 
-#: front-page.php:45
+#: front-page.php:84
 msgid "お待たせすることがあるため、お電話でのご予約をおすすめしています。"
 msgstr ""
 
-#: front-page.php:59
+#: front-page.php:99
 msgid "電話で相談する"
 msgstr ""
 
-#: front-page.php:63
+#: front-page.php:103
 msgid "費用の目安を見る"
 msgstr ""
 
-#: front-page.php:68
+#: front-page.php:108
 msgid "自賠責保険に対応"
 msgstr ""
 
-#: front-page.php:84
+#: front-page.php:124
 msgid "こんなことでお困りではありませんか"
 msgstr ""
 
-#: front-page.php:99
+#: front-page.php:139
 msgid "費用の目安を調べる"
 msgstr ""
 
-#: front-page.php:100
+#: front-page.php:140
 msgid "保険の種類と通院の頻度を選ぶと、おおよその金額を表示します。"
 msgstr ""
 
-#: front-page.php:107
+#: front-page.php:147
 msgid "料金シミュレーターを表示するには clinic-fee-simulator プラグインを有効化してください。"
 msgstr ""
 
-#: front-page.php:117
+#: front-page.php:157
 msgid "当院の4つの特徴"
 msgstr ""
 
-#: front-page.php:136
+#: front-page.php:176
 msgid "初回の流れ"
 msgstr ""
 
-#: front-page.php:154
+#: front-page.php:194
 msgid "よくあるご質問"
 msgstr ""
 
-#: front-page.php:172
+#: front-page.php:212
 msgid "アクセス"
 msgstr ""
 
-#: front-page.php:177
+#: front-page.php:217
 msgid "所在地"
 msgstr ""
 
-#: front-page.php:178
+#: front-page.php:218
 msgid "最寄り"
 msgstr ""
 
-#: front-page.php:179
+#: front-page.php:219
 msgid "駐車場"
 msgstr ""
 
-#: front-page.php:180
+#: front-page.php:220
 msgid "受付時間"
 msgstr ""
 
-#: front-page.php:184
+#: front-page.php:224
 msgid "※ 架空の所在地のため、実地図ではなく位置関係の略図を掲載しています。"
 msgstr ""
 
-#: front-page.php:202
+#: front-page.php:242
 msgid "メールでのご相談はこちらから"
 msgstr ""
 
-#: functions.php:118
+#: functions.php:170
 msgid "院の情報・LPの文言"
 msgstr ""
 
-#: functions.php:120
+#: functions.php:172
 msgid "電話番号や見出しをここから変更できます。"
 msgstr ""
 
-#: functions.php:155
+#: functions.php:211
 msgid "ヒーローの画像"
 msgstr ""
 
-#: functions.php:156
+#: functions.php:212
 msgid "未設定の場合は線画イラストを表示します。"
 msgstr ""
 
-#: functions.php:239
+#: functions.php:303
 msgid "ログイン情報が正しくありません。"
 msgstr ""
 
@@ -243,11 +243,11 @@ msgstr ""
 msgid "相談する"
 msgstr ""
 
-#: inc/illustrations.php:50
+#: inc/illustrations.php:54
 msgid "院の外観のイラスト"
 msgstr ""
 
-#: inc/illustrations.php:88
+#: inc/illustrations.php:94
 msgid "駅から当院までの位置関係を示した略図"
 msgstr ""
 

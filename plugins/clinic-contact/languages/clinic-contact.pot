@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-08-29T03:59:31+00:00\n"
+"POT-Creation-Date: 2026-08-29T04:33:53+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: clinic-contact\n"
@@ -34,115 +34,115 @@ msgstr ""
 msgid "hatchdogs"
 msgstr ""
 
-#: includes/class-cc-form.php:73
+#: includes/class-clinic-contact-form.php:78
 msgid "送信の有効期限が切れました。お手数ですが、もう一度お試しください。"
 msgstr ""
 
-#: includes/class-cc-form.php:79
-#: includes/class-cc-form.php:96
+#: includes/class-clinic-contact-form.php:90
+#: includes/class-clinic-contact-form.php:110
 msgid "送信しました。"
 msgstr ""
 
-#: includes/class-cc-form.php:122
+#: includes/class-clinic-contact-form.php:137
 msgid "お名前をご記入ください。"
 msgstr ""
 
-#: includes/class-cc-form.php:124
+#: includes/class-clinic-contact-form.php:139
 msgid "お名前が長すぎます。100文字以内でお願いします。"
 msgstr ""
 
-#: includes/class-cc-form.php:127
+#: includes/class-clinic-contact-form.php:142
 msgid "メールアドレスをご確認ください。"
 msgstr ""
 
-#: includes/class-cc-form.php:130
+#: includes/class-clinic-contact-form.php:145
 msgid "電話番号が長すぎます。"
 msgstr ""
 
-#: includes/class-cc-form.php:133
+#: includes/class-clinic-contact-form.php:148
 msgid "ご相談内容を5文字以上でご記入ください。"
 msgstr ""
 
-#: includes/class-cc-form.php:136
+#: includes/class-clinic-contact-form.php:151
 msgid "ご相談内容が長すぎます。2000文字以内でお願いします。"
 msgstr ""
 
-#: includes/class-cc-form.php:149
+#: includes/class-clinic-contact-form.php:167
 msgid "短時間に続けて送信されています。しばらく時間をおいてからお試しください。お急ぎの場合はお電話でご連絡ください。"
 msgstr ""
 
-#: includes/class-cc-form.php:213
+#: includes/class-clinic-contact-form.php:249
 msgid "現在、送信の設定に問題があります。お手数ですがお電話でご連絡ください。"
 msgstr ""
 
 #. translators: %s: サイト名
-#: includes/class-cc-form.php:220
+#: includes/class-clinic-contact-form.php:256
 #, php-format
 msgid "[%s] サイトからのご相談"
 msgstr ""
 
-#: includes/class-cc-form.php:227
+#: includes/class-clinic-contact-form.php:263
 msgid "サイトのフォームから相談が届きました。"
 msgstr ""
 
-#: includes/class-cc-form.php:229
+#: includes/class-clinic-contact-form.php:265
 msgid "お名前: "
 msgstr ""
 
-#: includes/class-cc-form.php:230
+#: includes/class-clinic-contact-form.php:266
 msgid "メール: "
 msgstr ""
 
-#: includes/class-cc-form.php:231
+#: includes/class-clinic-contact-form.php:267
 msgid "電話: "
 msgstr ""
 
-#: includes/class-cc-form.php:233
+#: includes/class-clinic-contact-form.php:269
 msgid "── ご相談内容 ──"
 msgstr ""
 
-#: includes/class-cc-form.php:237
+#: includes/class-clinic-contact-form.php:273
 msgid "送信元: "
 msgstr ""
 
-#: includes/class-cc-form.php:238
+#: includes/class-clinic-contact-form.php:274
 msgid "受信日時: "
 msgstr ""
 
-#: includes/class-cc-form.php:252
+#: includes/class-clinic-contact-form.php:288
 msgid "送信できませんでした。お手数ですがお電話でご連絡ください。"
 msgstr ""
 
-#: includes/class-cc-form.php:258
+#: includes/class-clinic-contact-form.php:294
 msgid "ご相談を承りました。折り返しご連絡いたします。"
 msgstr ""
 
-#: includes/class-cc-form.php:291
+#: includes/class-clinic-contact-form.php:325
 msgid "この欄は入力しないでください"
 msgstr ""
 
-#: includes/class-cc-form.php:296
+#: includes/class-clinic-contact-form.php:330
 msgid "お名前"
 msgstr ""
 
-#: includes/class-cc-form.php:296
-#: includes/class-cc-form.php:300
-#: includes/class-cc-form.php:308
+#: includes/class-clinic-contact-form.php:330
+#: includes/class-clinic-contact-form.php:334
+#: includes/class-clinic-contact-form.php:342
 msgid "必須"
 msgstr ""
 
-#: includes/class-cc-form.php:300
+#: includes/class-clinic-contact-form.php:334
 msgid "メールアドレス"
 msgstr ""
 
-#: includes/class-cc-form.php:304
+#: includes/class-clinic-contact-form.php:338
 msgid "電話番号（任意）"
 msgstr ""
 
-#: includes/class-cc-form.php:308
+#: includes/class-clinic-contact-form.php:342
 msgid "ご相談内容"
 msgstr ""
 
-#: includes/class-cc-form.php:312
+#: includes/class-clinic-contact-form.php:346
 msgid "送信する"
 msgstr ""

@@ -45,10 +45,10 @@ WordPress 本体・`uploads/`・`languages/` は含みません。
 
 | ファイル | 役割 |
 |---|---|
-| `includes/class-cfs-settings.php` | 管理画面（料金表・注記の編集） |
-| `includes/class-cfs-calculator.php` | 計算ロジックと入力の正規化 |
-| `includes/class-cfs-shortcode.php` | `[clinic_simulator]` |
-| `includes/class-cfs-rest.php` | `POST /wp-json/clinic-simulator/v1/estimate` |
+| `includes/class-clinic-fee-simulator-settings.php` | 管理画面（料金表・注記の編集） |
+| `includes/class-clinic-fee-simulator-calculator.php` | 計算ロジックと入力の正規化 |
+| `includes/class-clinic-fee-simulator-shortcode.php` | `[clinic_simulator]` |
+| `includes/class-clinic-fee-simulator-rest.php` | `POST /wp-json/clinic-simulator/v1/estimate` |
 | `assets/simulator.js` / `.css` | 表示と即時更新 |
 
 設計上の判断:
@@ -65,8 +65,8 @@ WordPress 本体・`uploads/`・`languages/` は含みません。
 
 | ファイル | 役割 |
 |---|---|
-| `includes/class-cc-mailer.php` | `phpmailer_init` で SMTP へ切り替え |
-| `includes/class-cc-form.php` | `[clinic_contact]` |
+| `includes/class-clinic-contact-mailer.php` | `phpmailer_init` で SMTP へ切り替え |
+| `includes/class-clinic-contact-form.php` | `[clinic_contact]` |
 | `assets/contact.css` | スタイル |
 
 - スパム対策は nonce ＋ ハニーポット ＋ 時間トラップ（送信までが速すぎる投稿を弾く）。
@@ -95,6 +95,42 @@ define( 'CLINIC_SMTP_PASS', '...' );
 - シミュレーターの全54通りを REST エンドポイント経由で検算。
 - 不正な入力（未知の保険種別・範囲外の頻度・配列でない症状・`<script>`）が
   既定値に落ちることを確認。
+
+## 品質の確認
+
+push のたびに GitHub Actions で次を回しています。
+
+| ジョブ | 内容 |
+|---|---|
+| 構文チェック | PHP 8.0 / 8.1 / 8.2 / 8.3 / 8.4 で `php -l` |
+| WordPress Coding Standards | PHPCS + WPCS + PHPCompatibilityWP（`phpcs.xml.dist`） |
+| テスト | PHPUnit。同じ PHP マトリクス |
+
+デプロイは入れていません。サーバー側が作業ツリーの実体で、
+変更は サーバー → 手元 → GitHub の向きに流れます。
+自動デプロイは逆向きになり、サーバー上の変更と衝突します。
+
+### テスト
+
+料金の計算と設定値の検証は WordPress のデータベースを触らないため、
+WordPress のテストスイートも MySQL も使いません。実際に呼ばれる数個の
+関数だけを `tests/bootstrap.php` で用意しています。実行は 0.01 秒ほどです。
+
+- `tests/CalculatorTest.php` … 入力の正規化と、保険3種 × 頻度3種 × 症状0〜5個の
+  **全54通り**を、独立して立てた式と突き合わせます
+- `tests/SettingsTest.php` … 管理画面の入力検証。数字でない値・負数・範囲外を渡し、
+  その項目だけが据え置かれること、他の項目は保存されることを確認します
+
+このテストは実際に2件のバグを見つけました。`frequency` に `-2` を渡すと
+`absint()` が 2 に変えて「週2回」として通っていた件と、自己負担割合を 25% に
+設定すると注記に「3割」と表示されていた件です。どちらも手作業の確認では
+値の選び方によって隠れていました。
+
+### PHPCS で外している規則
+
+`phpcs.xml.dist` に理由を書いてあります。要点は、コメントの終止符や
+先頭の大文字を見る規則は日本語で書いている限り構造的に通らないこと、
+`$phpmailer->SMTPAuth` などは PHPMailer 側の命名で改名できないことです。
 
 ## 国際化について
 
