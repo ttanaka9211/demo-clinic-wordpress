@@ -37,7 +37,11 @@ jobs:
           php-version: '8.3'
           coverage: none
           tools: cs2pr
-      - uses: ramsey/composer-install@v3
+      # 依存は開発用の数個だけ。第三者のラッパーを挟むより、
+      # composer install を直接呼ぶほうが見通しがよく、
+      # そのラッパーが内部で使う action の版まで面倒を見なくて済む。
+      - name: 依存の取得
+        run: composer install --no-interaction --no-progress --prefer-dist
       - name: phpcs
         run: vendor/bin/phpcs --report-full --report-checkstyle=phpcs.xml
       - name: 結果を差分に出す
@@ -57,8 +61,7 @@ jobs:
         with:
           php-version: ${{ matrix.php }}
           coverage: none
-      - uses: ramsey/composer-install@v3
-        with:
-          composer-options: "--ignore-platform-req=php+"
+      - name: 依存の取得
+        run: composer install --no-interaction --no-progress --prefer-dist --ignore-platform-req=php+
       - name: phpunit
         run: vendor/bin/phpunit --colors=never

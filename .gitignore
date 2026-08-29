@@ -8,6 +8,7 @@
 !composer.json
 !phpcs.xml.dist
 !phpunit.xml.dist
+!composer.lock
 !tests/
 !.github/
 !themes/
@@ -30,5 +31,4 @@ plugins/*
 
 # 開発用の依存。CI では毎回入れ直すのでコミットしない。
 /vendor/
-composer.lock
 .phpunit.result.cache
