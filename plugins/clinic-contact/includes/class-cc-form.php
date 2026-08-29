@@ -80,9 +80,19 @@ final class CC_Form {
 			return;
 		}
 
-		// 時間トラップ：表示から極端に短い送信は機械とみなす。
+		/*
+		 * 時間トラップ：表示から極端に短い送信は機械とみなす。
+		 *
+		 * cc_started が無い送信も同じ扱いにする。以前は $started > 0 を
+		 * 条件にしていたため、この欄を送らなければトラップを丸ごと
+		 * 回避できた。素朴な機械ほど欄を落とす。
+		 *
+		 * なお cc_started はただの hidden なので値は偽装できる。
+		 * これは素朴な機械を落とすためのもので、これ自体は防御にならない。
+		 * 回数の歯止めはレート制限のほうで持つ。
+		 */
 		$started = absint( $_POST['cc_started'] ?? 0 );
-		if ( $started > 0 && ( time() - $started ) < self::MIN_SEC ) {
+		if ( $started <= 0 || ( time() - $started ) < self::MIN_SEC ) {
 			self::$notice = array( 'type' => 'ok', 'text' => __( '送信しました。', 'clinic-contact' ) );
 			return;
 		}
@@ -100,12 +110,24 @@ final class CC_Form {
 			'message' => $message,
 		);
 
+		/*
+		 * 長さはサーバ側でも見る。maxlength は入力の案内でしかなく、
+		 * POST を直接組み立てれば効かない。
+		 * お名前は Reply-To ヘッダに載るので特に縛る。
+		 * sanitize_text_field が改行を落とすためヘッダの注入はできないが、
+		 * 極端に長い値はヘッダを壊す。
+		 */
 		$errors = array();
 		if ( '' === $name ) {
 			$errors[] = __( 'お名前をご記入ください。', 'clinic-contact' );
+		} elseif ( mb_strlen( $name ) > 100 ) {
+			$errors[] = __( 'お名前が長すぎます。100文字以内でお願いします。', 'clinic-contact' );
 		}
 		if ( '' === $email || ! is_email( $email ) ) {
 			$errors[] = __( 'メールアドレスをご確認ください。', 'clinic-contact' );
+		}
+		if ( mb_strlen( $tel ) > 30 ) {
+			$errors[] = __( '電話番号が長すぎます。', 'clinic-contact' );
 		}
 		if ( mb_strlen( $message ) < 5 ) {
 			$errors[] = __( 'ご相談内容を5文字以上でご記入ください。', 'clinic-contact' );
