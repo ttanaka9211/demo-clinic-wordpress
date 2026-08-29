@@ -148,14 +148,18 @@ final class CFS_Settings {
 	}
 
 	/**
-	 * 入力値の検証。範囲外は既定値へ戻す。
+	 * 入力値の検証。おかしな値はその項目だけ元のまま据え置く。
 	 *
 	 * @param mixed $input 送信値。
 	 * @return array<string, int|string>
 	 */
 	public static function sanitize( $input ): array {
-		$defaults = self::defaults();
-		$out      = $defaults;
+		/*
+		 * 土台は「いま保存されている値」。既定値ではない。
+		 * ひとつの入力ミスで、前に設定した他の項目まで工場出荷値へ
+		 * 巻き戻ってしまうため。
+		 */
+		$out = self::get();
 
 		if ( ! is_array( $input ) ) {
 			return $out;
@@ -168,14 +172,36 @@ final class CFS_Settings {
 			$min = (int) $field['min'];
 			$max = (int) $field['max'];
 
-			$value = absint( $input[ $key ] );
+			$raw = trim( (string) $input[ $key ] );
+
+			/*
+			 * absint() を使わない。'abc' を 0、'-500' を 500 に変えてしまい、
+			 * 入力ミスが黙って別の値として保存される。
+			 * base_price は最小値が 0 なので、'abc' が施術料 0 円として
+			 * そのまま公開サイトに出ていた。
+			 */
+			if ( 1 !== preg_match( '/\A[0-9]+\z/', $raw ) ) {
+				add_settings_error(
+					CFS_OPTION,
+					'cfs_' . $key,
+					sprintf(
+						/* translators: %s: 項目名 */
+						__( '「%s」は半角数字で入力してください。この項目は変更していません。', 'clinic-fee-simulator' ),
+						$field['label']
+					),
+					'error'
+				);
+				continue;
+			}
+
+			$value = (int) $raw;
 			if ( $value < $min || $value > $max ) {
 				add_settings_error(
 					CFS_OPTION,
 					'cfs_' . $key,
 					sprintf(
 						/* translators: 1: 項目名, 2: 最小値, 3: 最大値 */
-						__( '「%1$s」は %2$s〜%3$s の範囲で入力してください。既定値に戻しました。', 'clinic-fee-simulator' ),
+						__( '「%1$s」は %2$s〜%3$s の範囲で入力してください。この項目は変更していません。', 'clinic-fee-simulator' ),
 						$field['label'],
 						number_format_i18n( $min ),
 						number_format_i18n( $max )
