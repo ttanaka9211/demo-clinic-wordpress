@@ -31,6 +31,54 @@ final class CFS_Settings {
 	}
 
 	/**
+	 * 項目の定義。ラベル・種類・範囲をここだけで持つ。
+	 *
+	 * 以前はラベルが register()、範囲が sanitize()、min/max が render_field()
+	 * にそれぞれ散っていた。そのため検証エラーの文面に内部キー
+	 * （base_price など）がそのまま出ていて、画面の項目名と結びつかなかった。
+	 *
+	 * @return array<string, array{label: string, type: string, min?: int, max?: int}>
+	 */
+	private static function fields(): array {
+		return array(
+			'base_price'      => array(
+				'label' => __( '1回あたりの基本施術料（円）', 'clinic-fee-simulator' ),
+				'type'  => 'number',
+				'min'   => 0,
+				'max'   => 1000000,
+			),
+			'symptom_surchg'  => array(
+				'label' => __( '症状が多い場合の加算（円）', 'clinic-fee-simulator' ),
+				'type'  => 'number',
+				'min'   => 0,
+				'max'   => 1000000,
+			),
+			'symptom_thresh'  => array(
+				'label' => __( '加算の対象となる症状の数', 'clinic-fee-simulator' ),
+				'type'  => 'number',
+				'min'   => 1,
+				'max'   => 20,
+			),
+			'weeks_per_month' => array(
+				'label' => __( '月あたりの週数', 'clinic-fee-simulator' ),
+				'type'  => 'number',
+				'min'   => 1,
+				'max'   => 6,
+			),
+			'kenpo_rate'      => array(
+				'label' => __( '健康保険の自己負担割合（％）', 'clinic-fee-simulator' ),
+				'type'  => 'number',
+				'min'   => 0,
+				'max'   => 100,
+			),
+			'disclaimer'      => array(
+				'label' => __( '注記', 'clinic-fee-simulator' ),
+				'type'  => 'textarea',
+			),
+		);
+	}
+
+	/**
 	 * 設定の取得。既定値とマージして欠損キーを埋める。
 	 *
 	 * @return array<string, int|string>
@@ -87,23 +135,14 @@ final class CFS_Settings {
 			'clinic-fee-simulator'
 		);
 
-		$fields = array(
-			'base_price'      => array( __( '1回あたりの基本施術料（円）', 'clinic-fee-simulator' ), 'number' ),
-			'symptom_surchg'  => array( __( '症状が多い場合の加算（円）', 'clinic-fee-simulator' ), 'number' ),
-			'symptom_thresh'  => array( __( '加算の対象となる症状の数', 'clinic-fee-simulator' ), 'number' ),
-			'weeks_per_month' => array( __( '月あたりの週数', 'clinic-fee-simulator' ), 'number' ),
-			'kenpo_rate'      => array( __( '健康保険の自己負担割合（％）', 'clinic-fee-simulator' ), 'number' ),
-			'disclaimer'      => array( __( '注記', 'clinic-fee-simulator' ), 'textarea' ),
-		);
-
-		foreach ( $fields as $key => $field ) {
+		foreach ( self::fields() as $key => $field ) {
 			add_settings_field(
 				$key,
-				$field[0],
+				$field['label'],
 				array( __CLASS__, 'render_field' ),
 				'clinic-fee-simulator',
 				'cfs_prices',
-				array( 'key' => $key, 'type' => $field[1] )
+				array( 'key' => $key ) + $field
 			);
 		}
 	}
@@ -122,29 +161,24 @@ final class CFS_Settings {
 			return $out;
 		}
 
-		$ranges = array(
-			'base_price'      => array( 0, 1000000 ),
-			'symptom_surchg'  => array( 0, 1000000 ),
-			'symptom_thresh'  => array( 1, 20 ),
-			'weeks_per_month' => array( 1, 6 ),
-			'kenpo_rate'      => array( 0, 100 ),
-		);
-
-		foreach ( $ranges as $key => list( $min, $max ) ) {
-			if ( ! isset( $input[ $key ] ) ) {
+		foreach ( self::fields() as $key => $field ) {
+			if ( 'number' !== $field['type'] || ! isset( $input[ $key ] ) ) {
 				continue;
 			}
+			$min = (int) $field['min'];
+			$max = (int) $field['max'];
+
 			$value = absint( $input[ $key ] );
 			if ( $value < $min || $value > $max ) {
 				add_settings_error(
 					CFS_OPTION,
 					'cfs_' . $key,
 					sprintf(
-						/* translators: 1: field key, 2: min, 3: max */
-						__( '「%1$s」は %2$d〜%3$d の範囲で入力してください。既定値に戻しました。', 'clinic-fee-simulator' ),
-						$key,
-						$min,
-						$max
+						/* translators: 1: 項目名, 2: 最小値, 3: 最大値 */
+						__( '「%1$s」は %2$s〜%3$s の範囲で入力してください。既定値に戻しました。', 'clinic-fee-simulator' ),
+						$field['label'],
+						number_format_i18n( $min ),
+						number_format_i18n( $max )
 					),
 					'error'
 				);
@@ -163,7 +197,7 @@ final class CFS_Settings {
 	/**
 	 * 入力欄の描画。
 	 *
-	 * @param array{key: string, type: string} $args 引数。
+	 * @param array{key: string, label: string, type: string, min?: int, max?: int} $args 引数。
 	 */
 	public static function render_field( array $args ): void {
 		$settings = self::get();
@@ -182,10 +216,12 @@ final class CFS_Settings {
 		}
 
 		printf(
-			'<input type="number" name="%s" id="%s" value="%s" class="small-text" min="0" step="1">',
+			'<input type="number" name="%s" id="%s" value="%s" class="small-text" min="%s" max="%s" step="1">',
 			esc_attr( $name ),
 			esc_attr( $key ),
-			esc_attr( (string) $value )
+			esc_attr( (string) $value ),
+			esc_attr( (string) ( $args['min'] ?? 0 ) ),
+			esc_attr( (string) ( $args['max'] ?? '' ) )
 		);
 	}
 
