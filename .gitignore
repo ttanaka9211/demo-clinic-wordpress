@@ -1,8 +1,10 @@
 # 既定ですべて追跡しない。自作したテーマとプラグインだけを対象にする。
-# WordPress 本体・languages・uploads・upgrade はここでは管理しない。
+# WordPress 本体と wp-content 直下の languages / uploads / upgrade は管理しない。
+# （テーマ・プラグインが各自持つ languages/ は追跡対象に入る）
 /*
 !.gitignore
 !README.md
+!LICENSE
 !themes/
 themes/*
 !themes/sakura-clinic/

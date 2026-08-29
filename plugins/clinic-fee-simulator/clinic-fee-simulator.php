@@ -33,6 +33,8 @@ require_once CFS_DIR . 'includes/class-cfs-rest.php';
  * 起動。
  */
 function cfs_bootstrap(): void {
+	load_plugin_textdomain( 'clinic-fee-simulator', false, dirname( plugin_basename( CFS_FILE ) ) . '/languages' );
+
 	CFS_Settings::init();
 	CFS_Shortcode::init();
 	CFS_Rest::init();
